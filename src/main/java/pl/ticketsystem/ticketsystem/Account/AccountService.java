@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem.Users.Account;
+package pl.ticketsystem.ticketsystem.Account;
 
 import org.springframework.stereotype.Service;
 

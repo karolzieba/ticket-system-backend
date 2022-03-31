@@ -1,9 +1,8 @@
-package pl.ticketsystem.ticketsystem.Users.Account;
+package pl.ticketsystem.ticketsystem.Account;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import pl.ticketsystem.ticketsystem.Users.User;
+
+import pl.ticketsystem.ticketsystem.Client.Client;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,8 +20,8 @@ public class Account implements Serializable {
     private String accountLogin;
     private String passwordAccount;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-    private User user;
+    @OneToOne(mappedBy = "account")
+    private Client client;
 
 
 
