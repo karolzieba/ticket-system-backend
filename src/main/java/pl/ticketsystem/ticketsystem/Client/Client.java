@@ -5,11 +5,12 @@ package pl.ticketsystem.ticketsystem.Client;
 import pl.ticketsystem.ticketsystem.Account.Account;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Moderator.Moderator;
+import pl.ticketsystem.ticketsystem.Ticket.Ticket;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-
+import java.util.Set;
 
 
 @Entity
@@ -26,7 +27,7 @@ public class Client implements Serializable {
     private BigDecimal numberAccountBank;
 
     @OneToOne
-    @JoinColumn(name="account_FK", referencedColumnName = "idaccount")
+    @JoinColumn(name="account_FK", referencedColumnName = "idAccount")
     private Account account;
 
 
@@ -35,4 +36,7 @@ public class Client implements Serializable {
 
     @OneToOne(mappedBy = "client")
     private Agency agency;
+
+    @OneToMany(mappedBy = "client")
+    private Set<Ticket> ticket;
 }
