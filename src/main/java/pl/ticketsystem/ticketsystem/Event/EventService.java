@@ -59,7 +59,7 @@ public class EventService {
             eventRepository.save(updatedEvent);
         }
         else {
-            throw new IllegalStateException("Klient o takim ID nie istnieje!");
+            throw new IllegalStateException("Event with this ID does not exist!");
         }
     }
     public void deleteEvent(long id) {
