@@ -4,7 +4,7 @@ import pl.ticketsystem.ticketsystem.Ticket.Ticket;
 import pl.ticketsystem.ticketsystem.Type.TypePayment;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -13,8 +13,8 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idPayment;
-    private LocalDate startDatePayment;
-    private LocalDate endDatePayment;
+    private LocalDateTime startDatePayment;
+    private LocalDateTime endDatePayment;
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "idTypeOfPaymentFK", referencedColumnName = "idTypePayment")
@@ -31,19 +31,19 @@ public class Payment {
         this.idPayment = idPayment;
     }
 
-    public LocalDate getStartDatePayment() {
+    public LocalDateTime getStartDatePayment() {
         return startDatePayment;
     }
 
-    public void setStartDatePayment(LocalDate startDatePayment) {
+    public void setStartDatePayment(LocalDateTime startDatePayment) {
         this.startDatePayment = startDatePayment;
     }
 
-    public LocalDate getEndDatePayment() {
+    public LocalDateTime getEndDatePayment() {
         return endDatePayment;
     }
 
-    public void setEndDatePayment(LocalDate endDatePayment) {
+    public void setEndDatePayment(LocalDateTime endDatePayment) {
         this.endDatePayment = endDatePayment;
     }
 

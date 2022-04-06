@@ -8,14 +8,9 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path="api/event")
-
 public class EventController {
-    private final EventService eventService;
-
     @Autowired
-    public EventController(EventService eventService) {
-        this.eventService = eventService;
-    }
+    private EventService eventService;
 
     @GetMapping
     public List<Event> getEvents() {
@@ -24,7 +19,7 @@ public class EventController {
 
     @GetMapping(path="{eventId}")
     public Event getEvent(@PathVariable long eventId) {
-        return eventService.getEvent(eventId).get();
+        return eventService.getEvent(eventId).orElse(null);
     }
 
     @PostMapping

@@ -1,5 +1,6 @@
 package pl.ticketsystem.ticketsystem.Payment;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,11 +9,8 @@ import java.util.Optional;
 
 @Service
 public class PaymentService {
+    @Autowired
     private PaymentRepository paymentRepository;
-
-    public PaymentService(PaymentRepository paymentRepository) {
-        this.paymentRepository = paymentRepository;
-    }
 
     public List<Payment> getPayments() {
         return paymentRepository.findAll();
@@ -21,7 +19,10 @@ public class PaymentService {
         return paymentRepository.findById(id);
     }
     public void addPayment(Payment payment) {
-        paymentRepository.save(payment);
+        if(!Objects.isNull(payment.getStartDatePayment()) /*&&
+                !Objects.isNull(payment.getTypePayment())*/) {
+            paymentRepository.save(payment);
+        }
     }
 
     public void updatePayment(long id, Payment payment) {

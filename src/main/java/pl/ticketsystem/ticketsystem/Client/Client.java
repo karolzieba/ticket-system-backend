@@ -2,22 +2,20 @@ package pl.ticketsystem.ticketsystem.Client;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import pl.ticketsystem.ticketsystem.Account.Account;
-import pl.ticketsystem.ticketsystem.Agency.Agency;
-import pl.ticketsystem.ticketsystem.Moderator.Moderator;
 import pl.ticketsystem.ticketsystem.Ticket.Ticket;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
 
 @Entity
 @Table(name="Client")
+@JsonIgnoreProperties("account")
 public class Client implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idClient;

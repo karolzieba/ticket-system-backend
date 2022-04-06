@@ -6,18 +6,17 @@ import pl.ticketsystem.ticketsystem.Type.TypeEvent;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name="Event")
-public class Event implements Serializable
-{
+public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idEvent;
     private String nameEvent;
-    private LocalDate dateEvent;
+    private LocalDateTime dateTimeEvent;
     private String locationEvent;
     private Double priceEvent;
     private Integer capacityEvent;
@@ -49,12 +48,12 @@ public class Event implements Serializable
         this.nameEvent = nameEvent;
     }
 
-    public LocalDate getDateEvent() {
-        return dateEvent;
+    public LocalDateTime getDateTimeEvent() {
+        return dateTimeEvent;
     }
 
-    public void setDateEvent(LocalDate dateEvent) {
-        this.dateEvent = dateEvent;
+    public void setDateTimeEvent(LocalDateTime dateTimeEvent) {
+        this.dateTimeEvent = dateTimeEvent;
     }
 
     public String getLocationEvent() {

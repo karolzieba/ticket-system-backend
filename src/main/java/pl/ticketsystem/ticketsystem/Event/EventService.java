@@ -1,5 +1,6 @@
 package pl.ticketsystem.ticketsystem.Event;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,11 +9,8 @@ import java.util.Optional;
 
 @Service
 public class EventService {
+    @Autowired
     private EventRepository eventRepository;
-
-    public EventService(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
-    }
 
     public List<Event> getEvents() {
         return eventRepository.findAll();
@@ -21,7 +19,15 @@ public class EventService {
         return eventRepository.findById(id);
     }
     public void addEvent(Event event) {
-        eventRepository.save(event);
+        if(!Objects.isNull(event.getNameEvent()) &&
+                !Objects.isNull(event.getDateTimeEvent()) &&
+                !Objects.isNull(event.getLocationEvent()) &&
+                !Objects.isNull(event.getPriceEvent()) &&
+                !Objects.isNull(event.getCapacityEvent()) //&&
+                /*!Objects.isNull(event.getAgency()) &&
+                !Objects.isNull(event.getTypeEvent())*/) {
+            eventRepository.save(event);
+        }
     }
 
     public void updateEvent(long id, Event event) {
@@ -32,8 +38,8 @@ public class EventService {
                 updatedEvent.setNameEvent(event.getNameEvent());
             }
 
-            if(!Objects.isNull(event.getDateEvent())) {
-                updatedEvent.setDateEvent(event.getDateEvent());
+            if(!Objects.isNull(event.getDateTimeEvent())) {
+                updatedEvent.setDateTimeEvent(event.getDateTimeEvent());
             }
 
             if(!Objects.isNull(event.getLocationEvent())) {

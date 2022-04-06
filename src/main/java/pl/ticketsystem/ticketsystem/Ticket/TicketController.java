@@ -9,12 +9,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="api/ticket")
 public class TicketController {
-    private final TicketService ticketService;
-
     @Autowired
-    public TicketController(TicketService ticketService) {
-        this.ticketService = ticketService;
-    }
+    private TicketService ticketService;
 
     @GetMapping
     public List<Ticket> getTickets() {
@@ -23,7 +19,7 @@ public class TicketController {
 
     @GetMapping(path="{ticketId}")
     public Ticket getTicket(@PathVariable long ticketId) {
-        return ticketService.getTicket(ticketId).get();
+        return ticketService.getTicket(ticketId).orElse(null);
     }
 
     @PostMapping

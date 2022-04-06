@@ -9,12 +9,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="api/payment")
 public class PaymentController {
-    private final PaymentService paymentService;
-
     @Autowired
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
-    }
+    private PaymentService paymentService;
 
     @GetMapping
     public List<Payment> getPayments() {
@@ -23,7 +19,7 @@ public class PaymentController {
 
     @GetMapping(path="{paymentId}")
     public Payment getPayment(@PathVariable long paymentId) {
-        return paymentService.getPayment(paymentId).get();
+        return paymentService.getPayment(paymentId).orElse(null);
     }
 
     @PostMapping
