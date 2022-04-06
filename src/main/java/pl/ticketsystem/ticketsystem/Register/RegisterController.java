@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem.Account;
+package pl.ticketsystem.ticketsystem.Register;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,14 +6,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 @RestController
-public class AccountController {
+public class RegisterController {
 
-
-
-    @GetMapping("/index")
-    public String index()
+    @GetMapping("/register")
+    public String temp()
     {
 
-        return "Hello world!";
+        return "Hello register";
     }
+
+
+
 }

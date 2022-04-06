@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RestController
 @RequestMapping(path="api/event")
+
 public class EventController {
     private final EventService eventService;
 

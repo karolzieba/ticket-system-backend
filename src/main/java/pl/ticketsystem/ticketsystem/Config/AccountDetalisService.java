@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.ticketsystem.ticketsystem.Account.Account;
 import pl.ticketsystem.ticketsystem.Account.AccountRepository;
-@AllArgsConstructor
+
 @Service
 public class AccountDetalisService implements UserDetailsService {
 
