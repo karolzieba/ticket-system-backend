@@ -11,8 +11,12 @@ import java.util.Optional;
 
 @Service
 public class TicketService {
+    private final TicketRepository ticketRepository;
+
     @Autowired
-    private TicketRepository ticketRepository;
+    public TicketService(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
+    }
 
     public List<Ticket> getTickets() {
         return ticketRepository.findAll();

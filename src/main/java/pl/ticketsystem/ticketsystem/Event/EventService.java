@@ -9,8 +9,12 @@ import java.util.Optional;
 
 @Service
 public class EventService {
+    private final EventRepository eventRepository;
+
     @Autowired
-    private EventRepository eventRepository;
+    public EventService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
 
     public List<Event> getEvents() {
         return eventRepository.findAll();

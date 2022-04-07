@@ -9,8 +9,12 @@ import java.util.Optional;
 
 @Service
 public class PaymentService {
+    private final PaymentRepository paymentRepository;
+
     @Autowired
-    private PaymentRepository paymentRepository;
+    public PaymentService(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
+    }
 
     public List<Payment> getPayments() {
         return paymentRepository.findAll();

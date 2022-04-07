@@ -9,8 +9,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="api/ticket")
 public class TicketController {
+    private final TicketService ticketService;
+
     @Autowired
-    private TicketService ticketService;
+    public TicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
 
     @GetMapping
     public List<Ticket> getTickets() {
@@ -27,7 +31,7 @@ public class TicketController {
         ticketService.addTicket(ticket);
     }
 
-    @PutMapping(path="{ticketId}")
+    @PatchMapping(path="{ticketId}")
     public void updateTicket(@PathVariable long ticketId, @RequestBody Ticket ticket) {
         ticketService.updateTicket(ticketId, ticket);
     }

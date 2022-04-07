@@ -9,8 +9,12 @@ import java.util.List;
 @RestController
 @RequestMapping(path="api/event")
 public class EventController {
+    private final EventService eventService;
+
     @Autowired
-    private EventService eventService;
+    public EventController(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     @GetMapping
     public List<Event> getEvents() {
@@ -27,7 +31,7 @@ public class EventController {
         eventService.addEvent(event);
     }
 
-    @PutMapping(path="{eventId}")
+    @PatchMapping(path="{eventId}")
     public void updateEvent(@PathVariable long eventId, @RequestBody Event event) {
         eventService.updateEvent(eventId, event);
     }
