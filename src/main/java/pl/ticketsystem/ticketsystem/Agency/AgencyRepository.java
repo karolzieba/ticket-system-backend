@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AgencyRepository extends JpaRepository <Agency, Long> {
+    boolean existsByNIP(String NIP);
 }

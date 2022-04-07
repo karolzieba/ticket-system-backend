@@ -1,20 +1,34 @@
 package pl.ticketsystem.ticketsystem.Register;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import pl.ticketsystem.ticketsystem.Agency.Agency;
+import pl.ticketsystem.ticketsystem.Client.Client;
+import pl.ticketsystem.ticketsystem.Moderator.Moderator;
 
-@Controller
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(path="register")
 public class RegisterController {
+    private final RegisterService registerService;
 
-    @GetMapping("/register")
-    public String temp()
-    {
-
-        return "Hello register";
+    @Autowired
+    public RegisterController(RegisterService registerService) {
+        this.registerService = registerService;
     }
 
+    @PostMapping("/moderator")
+    public void register(@RequestBody Moderator moderator) {
+        registerService.register(moderator);
+    }
 
+    @PostMapping("/client")
+    public void register(@RequestBody Client client) {
+        registerService.register(client);
+    }
 
+    @PostMapping("/agency")
+    public void register(@RequestBody Agency agency) {
+        registerService.register(agency);
+    }
 }
