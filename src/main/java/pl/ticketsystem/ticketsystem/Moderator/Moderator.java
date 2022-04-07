@@ -8,10 +8,11 @@ import pl.ticketsystem.ticketsystem.Client.Client;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "moderator")
-public class Moderator {
+public class Moderator implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idModerator;
