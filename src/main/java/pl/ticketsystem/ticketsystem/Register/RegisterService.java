@@ -1,7 +1,9 @@
 package pl.ticketsystem.ticketsystem.Register;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.ticketsystem.ticketsystem.Account.Account;
 import pl.ticketsystem.ticketsystem.Account.AccountRepository;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
@@ -16,23 +18,25 @@ import java.util.Set;
 
 @Service
 public class RegisterService {
-    private final RoleUserRepository roleUserRepository;
     private final AccountRepository accountRepository;
     private final ModeratorRepository moderatorRepository;
     private final ClientRepository clientRepository;
     private final AgencyRepository agencyRepository;
-
+    private final PasswordEncoder passwordEncoder;
+    private final RoleUserRepository roleUserRepository;
     @Autowired
     public RegisterService(RoleUserRepository roleUserRepository,
                            AccountRepository accountRepository,
                            ModeratorRepository moderatorRepository,
                            ClientRepository clientRepository,
-                           AgencyRepository agencyRepository) {
+                           AgencyRepository agencyRepository,
+                           PasswordEncoder passwordEncoder) {
         this.roleUserRepository = roleUserRepository;
         this.accountRepository = accountRepository;
         this.moderatorRepository = moderatorRepository;
         this.clientRepository = clientRepository;
         this.agencyRepository = agencyRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void register(Moderator moderator) {
@@ -81,6 +85,53 @@ public class RegisterService {
     }
 
     public void register(Client client) {
+
+        if(!Objects.isNull(client.getNameUser()) &&
+                !Objects.isNull(client.getAccount())) {
+            if(!Objects.isNull(client.getAccount().getEmailAccount()) &&
+                    !Objects.isNull(client.getAccount().getAccountLogin()) &&
+                    !Objects.isNull(client.getAccount().getPasswordAccount())) {
+                if(client.getAccount().getEmailAccount().indexOf('@') != -1) {
+                    if(!clientRepository.existsByNameUser(client.getNameUser()) &&
+                            !accountRepository.existsByAccountLogin(client.getAccount().getAccountLogin()) &&
+                            !accountRepository.existsByEmailAccount(client.getAccount().getEmailAccount())) {
+                        Set<RoleUser> roles = new HashSet<>();
+
+                        RoleUser roleUser;
+
+                            roleUser = roleUserRepository.findById(1).orElse(null);
+                            roles.add(roleUser);
+
+
+                        client.getAccount().setPasswordAccount(passwordEncoder.encode(client.getAccount().getPasswordAccount()));
+                        accountRepository.save(client.getAccount());
+
+                        if(accountRepository.existsByAccountLogin(client.getAccount().getAccountLogin())) {
+                            clientRepository.save(client);
+                        }
+                        else {
+                            System.out.println("The account has not been added!");
+                        }
+                    }
+                    else {
+                        System.out.println("A client name or account with this data already exists!");
+                    }
+                }
+                else {
+                    System.out.println("Given email does not have @!");
+                }
+            }
+            else {
+                System.out.println("One of the fields is empty!");
+            }
+        }
+        else {
+            System.out.println("Account or client name is empty!");
+        }
+
+
+
+
     }
 
     public void register(Agency agency) {
