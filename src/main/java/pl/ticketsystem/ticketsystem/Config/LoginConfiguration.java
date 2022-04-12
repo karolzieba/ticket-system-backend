@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableWebSecurity
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
+
 public class LoginConfiguration extends WebSecurityConfigurerAdapter {
 
     private AccountDetalisService accountDetalisService;
@@ -50,7 +51,12 @@ public class LoginConfiguration extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
 
-                .antMatchers("/css/*","/register/*");
+                .antMatchers("/css/*","/register/*", "/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**");
     }
 
     @Override
@@ -63,10 +69,14 @@ public class LoginConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/register").permitAll()
+                .antMatchers("/", "/login", "/register", "/swagger-ui**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().defaultSuccessUrl("/index", true)
+                .formLogin()
+                /*.loginPage("http://localhost:3000/register")
+                .usernameParameter("accountLogin")
+                .passwordParameter("passwordAccount")*/
+                .defaultSuccessUrl("/index", true)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
@@ -74,4 +84,7 @@ public class LoginConfiguration extends WebSecurityConfigurerAdapter {
                 .logout().permitAll()
                 .invalidateHttpSession(true);
     }
+
+
+
 }
