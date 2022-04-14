@@ -2,7 +2,9 @@ package pl.ticketsystem.ticketsystem.Client;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.ticketsystem.ticketsystem.Account.Account;
 import pl.ticketsystem.ticketsystem.Ticket.Ticket;
 
@@ -14,7 +16,6 @@ import java.util.Set;
 
 @Entity
 @Table(name="Client")
-@JsonIgnoreProperties("account")
 public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,6 +81,8 @@ public class Client implements Serializable {
         this.numberAccountBank = numberAccountBank;
     }
 
+    @JsonIgnore
+    @JsonProperty(value = "account")
     public Account getAccount() {
         return account;
     }

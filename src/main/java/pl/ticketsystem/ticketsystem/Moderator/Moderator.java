@@ -3,6 +3,8 @@ package pl.ticketsystem.ticketsystem.Moderator;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.ticketsystem.ticketsystem.Account.Account;
 import pl.ticketsystem.ticketsystem.Client.Client;
 
@@ -37,6 +39,8 @@ public class Moderator implements Serializable {
         this.userNameModerator = userNameModerator;
     }
 
+    @JsonIgnore
+    @JsonProperty(value = "account")
     public Account getAccount() {
         return account;
     }

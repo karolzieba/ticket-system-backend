@@ -62,6 +62,7 @@ public class RegisterService {
 
                             if(accountRepository.existsByAccountLogin(moderator.getAccount().getAccountLogin())) {
                                 moderatorRepository.save(moderator);
+                                System.out.println("Success!");
                             }
                             else {
                                 System.out.println("The account has not been added!");
@@ -85,16 +86,90 @@ public class RegisterService {
     }
 
     public void register(Client client) {
+        if(!Objects.isNull(client.getNameUser()) &&
+                !Objects.isNull(client.getSurName()) &&
+                !Objects.isNull(client.getDateOfBirth()) &&
+                !Objects.isNull(client.getPhoneNumber()) &&
+                !Objects.isNull(client.getAccount())) {
+            if(!Objects.isNull(client.getAccount().getEmailAccount()) &&
+                    !Objects.isNull(client.getAccount().getAccountLogin()) &&
+                    !Objects.isNull(client.getAccount().getPasswordAccount())) {
+                if(client.getAccount().getEmailAccount().indexOf('@') != -1) {
+                    if(!clientRepository.existsByPhoneNumber(client.getPhoneNumber()) &&
+                            !accountRepository.existsByAccountLogin(client.getAccount().getAccountLogin()) &&
+                            !accountRepository.existsByEmailAccount(client.getAccount().getEmailAccount())) {
+                        Set<RoleUser> roles = new HashSet<>();
+                        RoleUser roleUser = roleUserRepository.findById(1).orElse(null);
+                        roles.add(roleUser);
 
+                        client.getAccount().setPasswordAccount(passwordEncoder.encode(client.getAccount().getPasswordAccount()));
+                        accountRepository.save(client.getAccount());
 
-
-
-
-
+                        if(accountRepository.existsByAccountLogin(client.getAccount().getAccountLogin())) {
+                            clientRepository.save(client);
+                            System.out.println("Success!");
+                        }
+                        else {
+                            System.out.println("The account has not been added!");
+                        }
+                    }
+                    else {
+                        System.out.println("An account or any client field with this data already exists!");
+                    }
+                }
+                else {
+                    System.out.println("Given email does not have @!");
+                }
+            }
+            else {
+                System.out.println("One of the fields is empty!");
+            }
+        }
+        else {
+            System.out.println("Account or any client field is empty!");
+        }
     }
 
     public void register(Agency agency) {
+        if(!Objects.isNull(agency.getNameCompany()) &&
+                !Objects.isNull(agency.getNIP()) &&
+                !Objects.isNull(agency.getNumberPhone())) {
+            if(!Objects.isNull(agency.getAccount().getEmailAccount()) &&
+                    !Objects.isNull(agency.getAccount().getAccountLogin()) &&
+                    !Objects.isNull(agency.getAccount().getPasswordAccount())) {
+                if(agency.getAccount().getEmailAccount().indexOf('@') != -1) {
+                    if(!agencyRepository.existsByNIP(agency.getNIP()) &&
+                            !accountRepository.existsByAccountLogin(agency.getAccount().getAccountLogin()) &&
+                            !accountRepository.existsByEmailAccount(agency.getAccount().getEmailAccount())) {
+                        Set<RoleUser> roles = new HashSet<>();
+                        RoleUser roleUser = roleUserRepository.findById(2).orElse(null);
+                        roles.add(roleUser);
 
+                        agency.getAccount().setPasswordAccount(passwordEncoder.encode(agency.getAccount().getPasswordAccount()));
+                        accountRepository.save(agency.getAccount());
+
+                        if(accountRepository.existsByAccountLogin(agency.getAccount().getAccountLogin())) {
+                            agencyRepository.save(agency);
+                            System.out.println("Success!");
+                        }
+                        else {
+                            System.out.println("The account has not been added!");
+                        }
+                    }
+                    else {
+                        System.out.println("An account or any agency field with this data already exists!");
+                    }
+                }
+                else {
+                    System.out.println("Given email does not have @!");
+                }
+            }
+            else {
+                System.out.println("One of the fields is empty!");
+            }
+        }
+        else {
+            System.out.println("Account or any agency field is empty!");
+        }
     }
-
 }
