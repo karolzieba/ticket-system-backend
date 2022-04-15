@@ -1,27 +1,29 @@
 package pl.ticketsystem.ticketsystem.Config;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
+
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import pl.ticketsystem.ticketsystem.Account.AccountRepository;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,16 +33,15 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
-
 @CrossOrigin(origins = "http://localhost:3000")
 public class LoginConfiguration extends WebSecurityConfigurerAdapter {
 
-
+    private AccountRepository accountRepository;
 
 
 
     @Bean
-    public UserDetailsService userDetailsService(){return new AccountDetalisService();}
+    public UserDetailsService userDetailsService(){return new AccountDetalisService(accountRepository);}
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder();}
@@ -71,7 +72,6 @@ public class LoginConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-
                 .antMatchers("/css/*","/register/*","/login", "/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
@@ -102,7 +102,7 @@ public class LoginConfiguration extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/register", "/swagger-ui**").permitAll()
+                .antMatchers( "/login", "/register", "/swagger-ui**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

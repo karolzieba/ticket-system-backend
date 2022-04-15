@@ -11,25 +11,19 @@ import pl.ticketsystem.ticketsystem.Account.Account;
 import pl.ticketsystem.ticketsystem.Account.AccountRepository;
 
 @Service
-
+@AllArgsConstructor
 public class AccountDetalisService implements UserDetailsService {
 
-    @Autowired
-    AccountRepository accountRepository;
+
+    private AccountRepository accountRepository;
+
 
     @Override
     public UserDetails loadUserByUsername(String accountLogin) throws UsernameNotFoundException {
 
 
         Account account = accountRepository.findByaccountLogin(accountLogin);
-        if (account == null)
-        {
-            System.out.println("NO Found User");
-        }
-        else
-        {
-            System.out.println(account.getAccountLogin());
-        }
+
 
         return new AccountDetalis(account);
 
