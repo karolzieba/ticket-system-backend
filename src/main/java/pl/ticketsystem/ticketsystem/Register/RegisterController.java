@@ -7,7 +7,6 @@ import pl.ticketsystem.ticketsystem.Client.Client;
 import pl.ticketsystem.ticketsystem.Moderator.Moderator;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="register")
 public class RegisterController {
     private final RegisterService registerService;

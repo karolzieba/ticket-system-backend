@@ -1,9 +1,7 @@
 package pl.ticketsystem.ticketsystem.Register;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.ticketsystem.ticketsystem.Account.Account;
 import pl.ticketsystem.ticketsystem.Account.AccountRepository;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
@@ -11,10 +9,7 @@ import pl.ticketsystem.ticketsystem.Client.Client;
 import pl.ticketsystem.ticketsystem.Client.ClientRepository;
 import pl.ticketsystem.ticketsystem.Moderator.Moderator;
 import pl.ticketsystem.ticketsystem.Moderator.ModeratorRepository;
-
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Service
 public class RegisterService {
@@ -22,21 +17,16 @@ public class RegisterService {
     private final ModeratorRepository moderatorRepository;
     private final ClientRepository clientRepository;
     private final AgencyRepository agencyRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final RoleUserRepository roleUserRepository;
+
     @Autowired
-    public RegisterService(RoleUserRepository roleUserRepository,
-                           AccountRepository accountRepository,
+    public RegisterService(AccountRepository accountRepository,
                            ModeratorRepository moderatorRepository,
                            ClientRepository clientRepository,
-                           AgencyRepository agencyRepository,
-                           PasswordEncoder passwordEncoder) {
-        this.roleUserRepository = roleUserRepository;
+                           AgencyRepository agencyRepository) {
         this.accountRepository = accountRepository;
         this.moderatorRepository = moderatorRepository;
         this.clientRepository = clientRepository;
         this.agencyRepository = agencyRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public void register(Moderator moderator) {
@@ -49,15 +39,7 @@ public class RegisterService {
                         if(!moderatorRepository.existsByUserNameModerator(moderator.getUserNameModerator()) &&
                                 !accountRepository.existsByAccountLogin(moderator.getAccount().getAccountLogin()) &&
                                 !accountRepository.existsByEmailAccount(moderator.getAccount().getEmailAccount())) {
-                            Set<RoleUser> roles = new HashSet<>();
-
-                            RoleUser roleUser;
-                            for(int i = 0; i < 3; i++) {
-                                roleUser = roleUserRepository.findById(i).orElse(null);
-                                roles.add(roleUser);
-                            }
-
-                            moderator.getAccount().setPasswordAccount(passwordEncoder.encode(moderator.getAccount().getPasswordAccount()));
+                            //moderator.getAccount().setPasswordAccount(passwordEncoder.encode(moderator.getAccount().getPasswordAccount()));
                             accountRepository.save(moderator.getAccount());
 
                             if(accountRepository.existsByAccountLogin(moderator.getAccount().getAccountLogin())) {
@@ -98,11 +80,8 @@ public class RegisterService {
                     if(!clientRepository.existsByPhoneNumber(client.getPhoneNumber()) &&
                             !accountRepository.existsByAccountLogin(client.getAccount().getAccountLogin()) &&
                             !accountRepository.existsByEmailAccount(client.getAccount().getEmailAccount())) {
-                        Set<RoleUser> roles = new HashSet<>();
-                        RoleUser roleUser = roleUserRepository.findById(1).orElse(null);
-                        roles.add(roleUser);
 
-                        client.getAccount().setPasswordAccount(passwordEncoder.encode(client.getAccount().getPasswordAccount()));
+                        //client.getAccount().setPasswordAccount(passwordEncoder.encode(client.getAccount().getPasswordAccount()));
                         accountRepository.save(client.getAccount());
 
                         if(accountRepository.existsByAccountLogin(client.getAccount().getAccountLogin())) {
@@ -141,11 +120,8 @@ public class RegisterService {
                     if(!agencyRepository.existsByNIP(agency.getNIP()) &&
                             !accountRepository.existsByAccountLogin(agency.getAccount().getAccountLogin()) &&
                             !accountRepository.existsByEmailAccount(agency.getAccount().getEmailAccount())) {
-                        Set<RoleUser> roles = new HashSet<>();
-                        RoleUser roleUser = roleUserRepository.findById(2).orElse(null);
-                        roles.add(roleUser);
 
-                        agency.getAccount().setPasswordAccount(passwordEncoder.encode(agency.getAccount().getPasswordAccount()));
+                        //agency.getAccount().setPasswordAccount(passwordEncoder.encode(agency.getAccount().getPasswordAccount()));
                         accountRepository.save(agency.getAccount());
 
                         if(accountRepository.existsByAccountLogin(agency.getAccount().getAccountLogin())) {
