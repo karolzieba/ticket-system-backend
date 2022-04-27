@@ -20,6 +20,7 @@ public class Event implements Serializable {
     private String locationEvent;
     private Double priceEvent;
     private Integer capacityEvent;
+    //private boolean waitingToAccept;
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="idTypeEventFK", referencedColumnName = "idTypeEvent")

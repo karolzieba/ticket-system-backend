@@ -1,21 +1,28 @@
 package pl.ticketsystem.ticketsystem.Account;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Client.Client;
 import pl.ticketsystem.ticketsystem.Moderator.Moderator;
+import pl.ticketsystem.ticketsystem.Role.Role;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name="Account")
+@CrossOrigin(origins = "http://localhost:3000")
 public class Account implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idAccount;
     private String emailAccount;
-    private String accountLogin;
-    private String passwordAccount;
+    private String username;
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToOne(mappedBy = "account")
     private Client client;
@@ -28,10 +35,11 @@ public class Account implements Serializable {
 
     public Account() { }
 
-    public Account(String emailAccount, String accountLogin, String passwordAccount) {
+    public Account(String emailAccount, String username, String password, Role role) {
         this.emailAccount = emailAccount;
-        this.accountLogin = accountLogin;
-        this.passwordAccount = passwordAccount;
+        this.username = username;
+        this.password = password;
+        this.role = role;
     }
 
     public long getIdAccount() {
@@ -50,19 +58,27 @@ public class Account implements Serializable {
         this.emailAccount = emailAccount;
     }
 
-    public String getAccountLogin() {
-        return accountLogin;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccountLogin(String accountLogin) {
-        this.accountLogin = accountLogin;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getPasswordAccount() {
-        return passwordAccount;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordAccount(String passwordAccount) {
-        this.passwordAccount = passwordAccount;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
