@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem.Config.Swagger;
+package pl.ticketsystem.ticketsystem;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,17 +9,14 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-
-public class SwaggerConfiguration {
-
-
+@EnableSwagger2
+public class SpringFoxConfig {
     @Bean
-    public Docket api(){
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build();
     }
-
 }
