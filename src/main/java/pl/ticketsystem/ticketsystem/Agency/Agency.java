@@ -69,4 +69,16 @@ public class Agency implements Serializable {
     public void setAccount(Account account) {
         this.account = account;
     }
+
+    @Override
+    public String toString() {
+        return "Agency{" +
+                "idAgency=" + idAgency +
+                ", nameCompany='" + nameCompany + '\'' +
+                ", NIP='" + NIP + '\'' +
+                ", numberPhone='" + numberPhone + '\'' +
+                ", account=" + account +
+                ", event=" + event +
+                '}';
+    }
 }

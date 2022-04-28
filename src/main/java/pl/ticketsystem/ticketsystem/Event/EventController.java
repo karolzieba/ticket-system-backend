@@ -27,7 +27,7 @@ public class EventController {
         return eventService.getEvent(eventId).orElse(null);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     @PreAuthorize("hasAuthority('event_add')")
     public void addEvent(@RequestBody Event event) {
         eventService.addEvent(event);

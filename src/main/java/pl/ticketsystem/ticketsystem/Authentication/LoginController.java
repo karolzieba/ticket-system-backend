@@ -7,8 +7,8 @@ import pl.ticketsystem.ticketsystem.Account.Account;
 
 @RestController
 public class LoginController {
-    /*@PostMapping("/login")
+    @PostMapping("/login")
     public void login(@RequestBody Account account) {
 
-    }*/
+    }
 }

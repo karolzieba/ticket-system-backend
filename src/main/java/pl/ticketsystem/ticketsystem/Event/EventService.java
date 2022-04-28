@@ -2,6 +2,10 @@ package pl.ticketsystem.ticketsystem.Event;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.ticketsystem.ticketsystem.Agency.Agency;
+import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
+import pl.ticketsystem.ticketsystem.Type.TypeEvent;
+import pl.ticketsystem.ticketsystem.Type.TypeEventRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,10 +14,13 @@ import java.util.Optional;
 @Service
 public class EventService {
     private final EventRepository eventRepository;
-
+    private final TypeEventRepository typeEventRepository;
+    private final AgencyRepository agencyRepository;
     @Autowired
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, TypeEventRepository typeEventRepository, AgencyRepository agencyRepository) {
         this.eventRepository = eventRepository;
+        this.typeEventRepository = typeEventRepository;
+        this.agencyRepository = agencyRepository;
     }
 
     public List<Event> getEvents() {
@@ -23,16 +30,30 @@ public class EventService {
         return eventRepository.findById(id);
     }
     public void addEvent(Event event) {
-        if(!Objects.isNull(event.getNameEvent()) &&
+        /*if(!Objects.isNull(event.getNameEvent()) &&
                 !Objects.isNull(event.getDateTimeEvent()) &&
                 !Objects.isNull(event.getLocationEvent()) &&
                 !Objects.isNull(event.getPriceEvent()) &&
                 !Objects.isNull(event.getCapacityEvent()) //&&
-                /*!Objects.isNull(event.getAgency()) &&
-                !Objects.isNull(event.getTypeEvent())*/) {
-            eventRepository.save(event);
-        }
+                *//*!Objects.isNull(event.getAgency()) &&
+                !Objects.isNull(event.getTypeEvent())*//*) {
+            eventRepository.save(event);*/
+
+        TypeEvent typeEvent = typeEventRepository.findById(event.getTypeEvent().getIdTypeEvent()).get();
+        Agency agency = agencyRepository.findById(event.getAgency().getIdAgency()).get();
+
+        System.out.println(typeEvent.toString());
+        System.out.println(agency.toString());
+        event.setTypeEvent(typeEvent);
+        event.setAgency(agency);
+
+
+        eventRepository.save(event);
+
+
+
     }
+
 
     public void updateEvent(long id, Event event) {
         if(eventRepository.existsById(id)) {

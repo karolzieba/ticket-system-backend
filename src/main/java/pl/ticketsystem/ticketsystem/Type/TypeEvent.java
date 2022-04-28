@@ -9,7 +9,7 @@ import java.util.Set;
 @Table(name="TypeEvent")
 public class TypeEvent {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private long idTypeEvent;
     private String nameTypeEvent;
     private int minAgeLimit;
@@ -40,4 +40,7 @@ public class TypeEvent {
     public void setMinAgeLimit(int minAgeLimit) {
         this.minAgeLimit = minAgeLimit;
     }
+
+
+
 }

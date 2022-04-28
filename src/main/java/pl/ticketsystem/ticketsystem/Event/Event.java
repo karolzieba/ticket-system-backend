@@ -1,11 +1,14 @@
 package pl.ticketsystem.ticketsystem.Event;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Ticket.Ticket;
 import pl.ticketsystem.ticketsystem.Type.TypeEvent;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -16,30 +19,26 @@ public class Event implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idEvent;
     private String nameEvent;
-    private LocalDateTime dateTimeEvent;
+    private LocalDate dateTimeEvent;
     private String locationEvent;
     private Double priceEvent;
     private Integer capacityEvent;
+
     //private boolean waitingToAccept;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name="idTypeEventFK", referencedColumnName = "idTypeEvent")
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "idTypeEventFK", referencedColumnName = "idTypeEvent")
     private TypeEvent typeEvent;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name="idAgencyFK", referencedColumnName = "idAgency")
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "idAgencyFK", referencedColumnName = "idAgency")
     private Agency agency;
 
+
+
     @OneToMany(mappedBy = "event")
+
     private Set<Ticket> ticket;
-
-    public long getIdEvent() {
-        return idEvent;
-    }
-
-    public void setIdEvent(long idEvent) {
-        this.idEvent = idEvent;
-    }
 
     public String getNameEvent() {
         return nameEvent;
@@ -49,11 +48,11 @@ public class Event implements Serializable {
         this.nameEvent = nameEvent;
     }
 
-    public LocalDateTime getDateTimeEvent() {
+    public LocalDate getDateTimeEvent() {
         return dateTimeEvent;
     }
 
-    public void setDateTimeEvent(LocalDateTime dateTimeEvent) {
+    public void setDateTimeEvent(LocalDate dateTimeEvent) {
         this.dateTimeEvent = dateTimeEvent;
     }
 
@@ -81,6 +80,19 @@ public class Event implements Serializable {
         this.capacityEvent = capacityEvent;
     }
 
+    @JsonIgnore
+    @JsonProperty(value = "TypeEvent")
+    public TypeEvent getTypeEvent() {
+        return typeEvent;
+    }
+
+
+    public void setTypeEvent(TypeEvent typeEvent) {
+        this.typeEvent = typeEvent;
+    }
+
+    @JsonIgnore
+    @JsonProperty(value = "agency")
     public Agency getAgency() {
         return agency;
     }
@@ -89,11 +101,13 @@ public class Event implements Serializable {
         this.agency = agency;
     }
 
-    public TypeEvent getTypeEvent() {
-        return typeEvent;
+    public Set<Ticket> getTicket() {
+        return ticket;
     }
 
-    public void setTypeEvent(TypeEvent typeEvent) {
-        this.typeEvent = typeEvent;
+    public void setTicket(Set<Ticket> ticket) {
+        this.ticket = ticket;
     }
+
+
 }

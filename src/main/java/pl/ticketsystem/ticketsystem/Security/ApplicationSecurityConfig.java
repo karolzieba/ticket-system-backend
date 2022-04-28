@@ -45,8 +45,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+
         http.cors().and()
+                .csrf()
+                .disable()
+
+
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
@@ -63,11 +67,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                .and()
+                /*.and()
                 .rememberMe()
                 .userDetailsService(accountDetailsService)
                 .alwaysRemember(true)
-                .key("KLUCZTICKETOWY")
+                .key("KLUCZTICKETOWY")*/
                 .and()
                 .logout()
                 .clearAuthentication(true)
