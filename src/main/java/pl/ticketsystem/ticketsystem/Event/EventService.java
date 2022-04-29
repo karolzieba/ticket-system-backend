@@ -39,7 +39,7 @@ public class EventService {
                 !Objects.isNull(event.getTypeEvent())*//*) {
             eventRepository.save(event);*/
         TypeEvent typeEvent = typeEventRepository.findBynameTypeEvent(event.getTypeEvent().getNameTypeEvent());
-        Agency agency = agencyRepository.findById(event.getAgency().getIdAgency()).get();
+        Agency agency = agencyRepository.findById(event.getAgency().getIdAgency()).orElseThrow(() -> new IllegalStateException("Agency with this ID does not exist!"));
         //System.out.println(event.getTypeEvent().getNameTypeEvent());
         //TypeEvent typeEvent = typeEventRepository.findById(event.getTypeEvent().getIdTypeEvent()).get();
 

@@ -17,7 +17,7 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @GetMapping("/ticket")
+    @GetMapping
     public List<Event> getEvents() {
         return eventService.getEvents();
     }
@@ -27,10 +27,8 @@ public class EventController {
         return eventService.getEvent(eventId).orElse(null);
     }
 
-
-
-    @PostMapping("/add")
-    //@PreAuthorize("hasAuthority('event_add')")
+    @PostMapping
+    @PreAuthorize("hasAuthority('event_add')")
     public void addEvent(@RequestBody Event event) {
         eventService.addEvent(event);
     }
