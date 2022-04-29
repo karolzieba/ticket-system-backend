@@ -38,15 +38,16 @@ public class EventService {
                 *//*!Objects.isNull(event.getAgency()) &&
                 !Objects.isNull(event.getTypeEvent())*//*) {
             eventRepository.save(event);*/
-
-        TypeEvent typeEvent = typeEventRepository.findById(event.getTypeEvent().getIdTypeEvent()).get();
+        TypeEvent typeEvent = typeEventRepository.findBynameTypeEvent(event.getTypeEvent().getNameTypeEvent());
         Agency agency = agencyRepository.findById(event.getAgency().getIdAgency()).get();
+        //System.out.println(event.getTypeEvent().getNameTypeEvent());
+        //TypeEvent typeEvent = typeEventRepository.findById(event.getTypeEvent().getIdTypeEvent()).get();
+
 
         System.out.println(typeEvent.toString());
         System.out.println(agency.toString());
         event.setTypeEvent(typeEvent);
         event.setAgency(agency);
-
 
         eventRepository.save(event);
 

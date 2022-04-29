@@ -40,6 +40,14 @@ public class Event implements Serializable {
 
     private Set<Ticket> ticket;
 
+    public long getIdEvent() {
+        return idEvent;
+    }
+
+    public void setIdEvent(long idEvent) {
+        this.idEvent = idEvent;
+    }
+
     public String getNameEvent() {
         return nameEvent;
     }
