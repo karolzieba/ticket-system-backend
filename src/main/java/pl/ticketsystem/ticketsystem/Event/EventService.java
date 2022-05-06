@@ -7,6 +7,7 @@ import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
 import pl.ticketsystem.ticketsystem.Type.TypeEvent;
 import pl.ticketsystem.ticketsystem.Type.TypeEventRepository;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,6 +27,14 @@ public class EventService {
     public List<Event> getEvents() {
         return eventRepository.findAll();
     }
+
+    public List<Event> getEventsByCategory(String categoryName)
+    {
+
+        TypeEvent typeEvent = typeEventRepository.findBynameTypeEventIgnoreCase(categoryName);
+        System.out.println("DADADA " + eventRepository.findEventByTypeEvent(typeEvent));
+        return eventRepository.findEventByTypeEvent(typeEvent);
+    }
     public Optional<Event> getEvent(long id) {
         return eventRepository.findById(id);
     }
@@ -38,7 +47,7 @@ public class EventService {
                 *//*!Objects.isNull(event.getAgency()) &&
                 !Objects.isNull(event.getTypeEvent())*//*) {
             eventRepository.save(event);*/
-        TypeEvent typeEvent = typeEventRepository.findBynameTypeEvent(event.getTypeEvent().getNameTypeEvent());
+        TypeEvent typeEvent = typeEventRepository.findBynameTypeEventIgnoreCase(event.getTypeEvent().getNameTypeEvent());
         Agency agency = agencyRepository.findById(event.getAgency().getIdAgency()).get();
         //System.out.println(event.getTypeEvent().getNameTypeEvent());
         //TypeEvent typeEvent = typeEventRepository.findById(event.getTypeEvent().getIdTypeEvent()).get();

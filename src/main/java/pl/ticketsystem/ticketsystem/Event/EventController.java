@@ -3,6 +3,7 @@ package pl.ticketsystem.ticketsystem.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.ticketsystem.ticketsystem.Type.TypeEvent;
 
 import java.util.List;
 
@@ -27,6 +28,11 @@ public class EventController {
         return eventService.getEvent(eventId).orElse(null);
     }
 
+    @GetMapping(path="/category/{categoryEvent}")
+    public List<Event> getEventCategory(@PathVariable String categoryEvent)
+    {
+        return eventService.getEventsByCategory(categoryEvent);
+    }
 
 
     @PostMapping("/add")

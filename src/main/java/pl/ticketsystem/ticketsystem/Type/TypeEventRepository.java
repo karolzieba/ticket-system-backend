@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TypeEventRepository extends JpaRepository <TypeEvent, Long > {
 
-    public TypeEvent findBynameTypeEvent(String name);
+    public TypeEvent findBynameTypeEventIgnoreCase(String name);
 }
