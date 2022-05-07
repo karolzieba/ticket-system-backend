@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem.Security;
+package pl.ticketsystem.ticketsystem.Config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,13 +16,17 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import pl.ticketsystem.ticketsystem.Authentication.AccountDetailsService;
+import pl.ticketsystem.ticketsystem.Auth.OAuth.OAuthAccountDetailsService;
+import pl.ticketsystem.ticketsystem.Auth.REST.AccountDetailsService;
+import pl.ticketsystem.ticketsystem.Auth.REST.JsonObjectAuthenticationFilter;
+import pl.ticketsystem.ticketsystem.Auth.REST.RestAuthenticationFailureHandler;
+import pl.ticketsystem.ticketsystem.Auth.REST.RestAuthenticationSuccessHandler;
 import pl.ticketsystem.ticketsystem.Role.Role;
 
-import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -34,14 +38,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private AccountDetailsService accountDetailsService;
     private RestAuthenticationSuccessHandler authenticationSuccessHandler;
     private RestAuthenticationFailureHandler authenticationFailureHandler;
+    private OAuthAccountDetailsService oAuthAccountDetailsService;
 
     @Autowired
     public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, AccountDetailsService accountDetailsService, RestAuthenticationSuccessHandler authenticationSuccessHandler,
-                          RestAuthenticationFailureHandler authenticationFailureHandler) {
+                          RestAuthenticationFailureHandler authenticationFailureHandler,
+                                     OAuthAccountDetailsService oAuthAccountDetailsService) {
         this.passwordEncoder = passwordEncoder;
         this.accountDetailsService = accountDetailsService;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
+        this.oAuthAccountDetailsService = oAuthAccountDetailsService;
     }
 
     @Override
@@ -49,6 +56,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf()
                 .ignoringAntMatchers("/login")
+                .ignoringAntMatchers("/oauth2/authorization/facebook")
+                .ignoringAntMatchers("/register/agency")
+                .ignoringAntMatchers("/register/moderator")
+                .ignoringAntMatchers("/register/client")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         http
@@ -57,6 +68,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/oauth2/authorization/facebook").permitAll()
                 .antMatchers("/register/agency").permitAll()
                 .antMatchers("/register/moderator").permitAll()
                 .antMatchers("/register/client").permitAll()
@@ -68,24 +80,24 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                /*.and()
-                .rememberMe()
-                .userDetailsService(accountDetailsService)
-                .alwaysRemember(true)
-                .key("KLUCZTICKETOWY")*/
+                .oauth2Login()
+                    .userInfoEndpoint()
+                        .userService(oAuthAccountDetailsService)
+                    .and()
+                        .defaultSuccessUrl("http://localhost:3000/index")
                 .and()
                 .logout()
-                .clearAuthentication(true)
-                .invalidateHttpSession(true)
-                .deleteCookies("SESSION")
-                .logoutSuccessUrl("/")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("SESSION")
+                    .logoutSuccessUrl("http://localhost:3000/index")
                 .and()
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        .maximumSessions(1)
-                        .maxSessionsPreventsLogin(true));
+                        .invalidSessionUrl("http://localhost:3000/invalidSession"))
+                .exceptionHandling()
+                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     }
 
     @Bean

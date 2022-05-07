@@ -48,15 +48,8 @@ public class RegisterService {
                             moderator.getAccount().setRole(Role.MODERATOR);
                             moderator.getAccount().setPassword(passwordEncoder.encode(moderator.getAccount().getPassword()));
 
-                            accountRepository.save(moderator.getAccount());
-
-                            if(accountRepository.existsByUsername(moderator.getAccount().getUsername())) {
-                                moderatorRepository.save(moderator);
-                                System.out.println("Success!");
-                            }
-                            else {
-                                System.out.println("The account has not been added!");
-                            }
+                            moderatorRepository.save(moderator);
+                            System.out.println("The account has been added!");
                         }
                         else {
                             System.out.println("A moderator name or account with this data already exists!");
@@ -93,15 +86,8 @@ public class RegisterService {
                         client.getAccount().setRole(Role.CLIENT);
                         client.getAccount().setPassword(passwordEncoder.encode(client.getAccount().getPassword()));
 
-                        accountRepository.save(client.getAccount());
-
-                        if(accountRepository.existsByUsername(client.getAccount().getUsername())) {
-                            clientRepository.save(client);
-                            System.out.println("Success!");
-                        }
-                        else {
-                            System.out.println("The account has not been added!");
-                        }
+                        clientRepository.save(client);
+                        System.out.println("The account has been added!");
                     }
                     else {
                         System.out.println("An account or any client field with this data already exists!");
@@ -134,15 +120,9 @@ public class RegisterService {
 
                         agency.getAccount().setRole(Role.AGENCY);
                         agency.getAccount().setPassword(passwordEncoder.encode(agency.getAccount().getPassword()));
-                        accountRepository.save(agency.getAccount());
 
-                        if(accountRepository.existsByUsername(agency.getAccount().getUsername())) {
-                            agencyRepository.save(agency);
-                            System.out.println("Success!");
-                        }
-                        else {
-                            System.out.println("The account has not been added!");
-                        }
+                        agencyRepository.save(agency);
+                        System.out.println("The account has been added!");
                     }
                     else {
                         System.out.println("An account or any agency field with this data already exists!");

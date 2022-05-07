@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem;
+package pl.ticketsystem.ticketsystem.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

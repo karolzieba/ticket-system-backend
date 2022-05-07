@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem.Authentication;
+package pl.ticketsystem.ticketsystem.Auth.REST;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -29,7 +29,7 @@ public class PaymentController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_CLIENT_FACEBOOK')")
     public void addPayment(@RequestBody Payment payment) {
         paymentService.addPayment(payment);
     }

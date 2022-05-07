@@ -20,6 +20,7 @@ public class Account implements Serializable {
     private String emailAccount;
     private String username;
     private String password;
+    private String idSocial;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -80,5 +81,13 @@ public class Account implements Serializable {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getIdSocial() {
+        return idSocial;
+    }
+
+    public void setIdSocial(String idSocial) {
+        this.idSocial = idSocial;
     }
 }

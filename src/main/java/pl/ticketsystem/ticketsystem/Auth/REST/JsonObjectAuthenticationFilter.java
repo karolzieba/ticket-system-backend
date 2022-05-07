@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem.Security;
+package pl.ticketsystem.ticketsystem.Auth.REST;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

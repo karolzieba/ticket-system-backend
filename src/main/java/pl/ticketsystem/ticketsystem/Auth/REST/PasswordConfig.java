@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem.Authentication;
+package pl.ticketsystem.ticketsystem.Auth.REST;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

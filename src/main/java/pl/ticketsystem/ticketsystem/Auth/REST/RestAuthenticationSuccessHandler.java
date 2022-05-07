@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem.Security;
+package pl.ticketsystem.ticketsystem.Auth.REST;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
