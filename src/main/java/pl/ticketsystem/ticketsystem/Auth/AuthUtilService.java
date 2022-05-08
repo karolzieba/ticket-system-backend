@@ -7,8 +7,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.ticketsystem.ticketsystem.Account.Account;
 import pl.ticketsystem.ticketsystem.Account.AccountRepository;
+import pl.ticketsystem.ticketsystem.Agency.Agency;
+import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
 import pl.ticketsystem.ticketsystem.Auth.OAuth.OAuthAccountDetails;
 import pl.ticketsystem.ticketsystem.Auth.REST.AccountDetails;
+import pl.ticketsystem.ticketsystem.Client.Client;
+import pl.ticketsystem.ticketsystem.Client.ClientRepository;
+import pl.ticketsystem.ticketsystem.Moderator.Moderator;
+import pl.ticketsystem.ticketsystem.Moderator.ModeratorRepository;
 
 import java.util.Collection;
 import java.util.Map;
@@ -16,10 +22,16 @@ import java.util.Map;
 @Service
 public class AuthUtilService {
     private final AccountRepository accountRepository;
+    private final ClientRepository clientRepository;
+    private final AgencyRepository agencyRepository;
+    private final ModeratorRepository moderatorRepository;
 
     @Autowired
-    public AuthUtilService(AccountRepository accountRepository) {
+    public AuthUtilService(AccountRepository accountRepository, ClientRepository clientRepository, AgencyRepository agencyRepository, ModeratorRepository moderatorRepository) {
         this.accountRepository = accountRepository;
+        this.clientRepository = clientRepository;
+        this.agencyRepository = agencyRepository;
+        this.moderatorRepository = moderatorRepository;
     }
 
     public void socialDeauthorize() {
@@ -40,7 +52,7 @@ public class AuthUtilService {
         String userName = "";
         if(role.equals("ROLE_CLIENT_FACEBOOK")) {
             OAuthAccountDetails accountDetails = (OAuthAccountDetails) authentication.getPrincipal();
-            userName = accountDetails.getName();
+            userName = accountDetails.getUsername();
         }
         else {
             AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
@@ -48,10 +60,25 @@ public class AuthUtilService {
         }
 
         Account account = accountRepository.findAccountByUsername(userName).orElseThrow(() -> new IllegalStateException("Account with this username does not exist!"));
-        String id = String.valueOf(account.getIdAccount());
+        long id = account.getIdAccount();
 
-        return Map.of("id", id,
+        long idRole = -1;
+        if(role.startsWith("ROLE_CLIENT")) {
+            Client client = clientRepository.getClientByAccount_IdAccount(id).orElseThrow(() -> new IllegalStateException("Client with this ID does not exist!"));
+            idRole = client.getIdClient();
+        }
+        else if(role.startsWith("ROLE_AGENCY")) {
+            Agency agency = agencyRepository.getAgencyByAccount_IdAccount(id).orElseThrow(() -> new IllegalStateException("Agency with this ID does not exist!"));
+            idRole = agency.getIdAgency();
+        }
+        else if(role.startsWith("ROLE_MODERATOR")) {
+            Moderator moderator = moderatorRepository.getModeratorByAccount_IdAccount(id).orElseThrow(() -> new IllegalStateException("Moderator with this ID does not exist!"));
+            idRole = moderator.getIdModerator();
+        }
+
+        return Map.of("id", String.valueOf(id),
                 "username", userName,
-                "role", role);
+                "role", role,
+                "idRole", String.valueOf(idRole));
     }
 }

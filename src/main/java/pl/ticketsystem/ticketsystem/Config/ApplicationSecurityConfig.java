@@ -84,18 +84,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .userInfoEndpoint()
                         .userService(oAuthAccountDetailsService)
                     .and()
-                        .defaultSuccessUrl("http://localhost:3000/index")
+                        .defaultSuccessUrl("http://localhost:3000/")
                 .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
                     .deleteCookies("SESSION")
-                    .logoutSuccessUrl("http://localhost:3000/index")
+                    .logoutSuccessUrl("http://localhost:3000/")
                 .and()
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        .invalidSessionUrl("http://localhost:3000/invalidSession"))
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .exceptionHandling()
                     .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     }

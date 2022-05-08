@@ -10,12 +10,12 @@ import java.util.Map;
 public class OAuthAccountDetails implements OAuth2User, Serializable {
     private final Collection<? extends GrantedAuthority> authorities;
     private final Map<String, Object> attributes;
-    private final String name;
+    private final String username;
 
-    public OAuthAccountDetails(Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes, String name) {
+    public OAuthAccountDetails(Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes, String username) {
         this.authorities = authorities;
         this.attributes = attributes;
-        this.name = name;
+        this.username = username;
     }
 
     @Override
@@ -29,11 +29,11 @@ public class OAuthAccountDetails implements OAuth2User, Serializable {
     }
 
     @Override
-    public String getName() {
-        return (String)attributes.get("name");
-    }
+    public String getName() { return (String)attributes.get("name"); }
 
     public String getEmail() { return (String)attributes.get("email"); }
 
     public String getIdSocial() { return (String)attributes.get("id"); }
+
+    public String getUsername() { return username; }
 }

@@ -50,8 +50,6 @@ public class EventService {
         TypeEvent typeEvent = typeEventRepository.findBynameTypeEventIgnoreCase(event.getTypeEvent().getNameTypeEvent());
         Agency agency = agencyRepository.findById(event.getAgency().getIdAgency()).get();
 
-
-
         System.out.println(typeEvent.toString());
         System.out.println(agency.toString());
         event.setTypeEvent(typeEvent);

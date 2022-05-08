@@ -48,7 +48,7 @@ public class OAuthAccountDetailsService extends DefaultOAuth2UserService {
         Account account = new Account();
         Client client = new Client();
         account.setIdSocial(accDetails.getIdSocial());
-        account.setUsername(accDetails.getName());
+        account.setUsername(accDetails.getName() + "#" + (accountRepository.findMaxID() + 1));
 
         byte[] array = new byte[32];
         new Random().nextBytes(array);
@@ -75,13 +75,18 @@ public class OAuthAccountDetailsService extends DefaultOAuth2UserService {
     public Client updateAccount(OAuthAccountDetails accDetails) {
         Client client = clientRepository.findByAccount_IdSocial(accDetails.getIdSocial()).orElseThrow(() -> new IllegalStateException("Account with this Social ID does not exist!"));
 
-        client.getAccount().setUsername(accDetails.getName());
+        String userName = client.getAccount().getUsername();
+        int idChar = userName.indexOf("#");
+        String idAccount = userName.substring(idChar, userName.length());
+        userName = accDetails.getName() + idAccount;
+
+        client.getAccount().setUsername(userName);
         client.getAccount().setEmailAccount(accDetails.getEmail());
 
         String name = accDetails.getName();
-        int id = name.indexOf(" ");
-        String firstName = name.substring(0, id);
-        String surName = name.substring(id + 1, name.length());
+        int idChar2 = name.indexOf(" ");
+        String firstName = name.substring(0, idChar2);
+        String surName = name.substring(idChar2 + 1, name.length());
 
         client.setNameUser(firstName);
         client.setSurName(surName);

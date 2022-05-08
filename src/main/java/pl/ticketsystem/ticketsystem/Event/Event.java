@@ -19,7 +19,7 @@ public class Event implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idEvent;
     private String nameEvent;
-    private LocalDate dateTimeEvent;
+    private LocalDateTime dateTimeEvent;
     private String locationEvent;
     private Double priceEvent;
     private Integer capacityEvent;
@@ -56,11 +56,11 @@ public class Event implements Serializable {
         this.nameEvent = nameEvent;
     }
 
-    public LocalDate getDateTimeEvent() {
+    public LocalDateTime getDateTimeEvent() {
         return dateTimeEvent;
     }
 
-    public void setDateTimeEvent(LocalDate dateTimeEvent) {
+    public void setDateTimeEvent(LocalDateTime dateTimeEvent) {
         this.dateTimeEvent = dateTimeEvent;
     }
 
