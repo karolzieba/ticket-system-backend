@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.ticketsystem.ticketsystem.Type.TypeEvent;
+
 
 import java.util.List;
 
@@ -26,6 +26,13 @@ public class EventController {
         return eventService.getEvents();
     }
 
+    @GetMapping(path = "/client/orders/{idAccount}")
+    public List<Object[]> getClientEvent(@PathVariable long idAccount)
+    {
+
+        return eventService.getUserEvents(idAccount);
+    }
+
     @GetMapping(path="{eventId}")
     public Event getEvent(@PathVariable long eventId) {
         return eventService.getEvent(eventId).orElse(null);
@@ -36,6 +43,8 @@ public class EventController {
     {
         return eventService.getEventsByCategory(categoryEvent);
     }
+
+
 
     @PostMapping
     @PreAuthorize("hasAuthority('event_add')")

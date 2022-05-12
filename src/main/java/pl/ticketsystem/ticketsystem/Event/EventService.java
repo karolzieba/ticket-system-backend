@@ -2,8 +2,11 @@ package pl.ticketsystem.ticketsystem.Event;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
+import pl.ticketsystem.ticketsystem.Client.ClientRepository;
+import pl.ticketsystem.ticketsystem.Ticket.TicketRepository;
 import pl.ticketsystem.ticketsystem.Type.TypeEvent;
 import pl.ticketsystem.ticketsystem.Type.TypeEventRepository;
 
@@ -54,7 +57,7 @@ public class EventService {
 
     }
 
-    public void addEvent(Event event) {
+
     public long addEvent(Event event) {
         /*if(!Objects.isNull(event.getNameEvent()) &&
                 !Objects.isNull(event.getDateTimeEvent()) &&
