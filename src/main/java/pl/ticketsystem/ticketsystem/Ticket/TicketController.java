@@ -17,17 +17,20 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    @GetMapping
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
-    public List<Ticket> getTickets() {
-        return ticketService.getTickets();
-    }
+
 
     /*@GetMapping(path="{username}")
     @PreAuthorize("hasAuthority('ticket_show')")
     public List<Ticket> getTicketsByUsername(@PathVariable String username) {
         return ticketService.getTicketsByUsername(username);
     }*/
+
+
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    public List<Ticket> getTickets() {
+        return ticketService.getTickets();
+    }
 
     @GetMapping(path="{ticketId}")
     @PreAuthorize("hasAuthority('ticket_show')")

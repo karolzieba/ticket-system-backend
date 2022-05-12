@@ -4,7 +4,7 @@ spring:
       client:
         registration:
           facebook:
-            client-id:
+            client-id: sad
             client-secret:
             scope:
               - email

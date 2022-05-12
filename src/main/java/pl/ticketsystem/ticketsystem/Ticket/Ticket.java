@@ -5,6 +5,7 @@ import pl.ticketsystem.ticketsystem.Event.Event;
 import pl.ticketsystem.ticketsystem.Payment.Payment;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,7 +14,7 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idTicket;
-    private LocalDateTime dateTicketBuy;
+    private LocalDate dateTicketBuy;
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="idClientFK", referencedColumnName = "idClient")
@@ -35,11 +36,11 @@ public class Ticket {
         this.idTicket = idTicket;
     }
 
-    public LocalDateTime getDateTicketBuy() {
+    public LocalDate getDateTicketBuy() {
         return dateTicketBuy;
     }
 
-    public void setDateTicketBuy(LocalDateTime dateTicketBuy) {
+    public void setDateTicketBuy(LocalDate dateTicketBuy) {
         this.dateTicketBuy = dateTicketBuy;
     }
 

@@ -1,5 +1,6 @@
 package pl.ticketsystem.ticketsystem.Event;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
@@ -8,7 +9,6 @@ import pl.ticketsystem.ticketsystem.Type.TypeEvent;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -38,6 +38,7 @@ public class Event implements Serializable {
 
     @OneToMany(mappedBy = "event")
 
+    @JsonBackReference
     private Set<Ticket> ticket;
 
     public long getIdEvent() {

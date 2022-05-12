@@ -1,13 +1,15 @@
 package pl.ticketsystem.ticketsystem.Event;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
+import pl.ticketsystem.ticketsystem.Client.ClientRepository;
+import pl.ticketsystem.ticketsystem.Ticket.TicketRepository;
 import pl.ticketsystem.ticketsystem.Type.TypeEvent;
 import pl.ticketsystem.ticketsystem.Type.TypeEventRepository;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,15 +19,19 @@ public class EventService {
     private final EventRepository eventRepository;
     private final TypeEventRepository typeEventRepository;
     private final AgencyRepository agencyRepository;
+    private final TicketRepository ticketRepository;
+    private final ClientRepository clientRepository;
     @Autowired
-    public EventService(EventRepository eventRepository, TypeEventRepository typeEventRepository, AgencyRepository agencyRepository) {
+    public EventService(EventRepository eventRepository, TypeEventRepository typeEventRepository, AgencyRepository agencyRepository, TicketRepository ticketRepository, ClientRepository clientRepository) {
         this.eventRepository = eventRepository;
         this.typeEventRepository = typeEventRepository;
         this.agencyRepository = agencyRepository;
+        this.ticketRepository = ticketRepository;
+        this.clientRepository = clientRepository;
     }
 
     public List<Event> getEvents() {
-        return eventRepository.findAll();
+        return eventRepository.findAllByOrderByIdEventDesc();
     }
 
     public List<Event> getEventsByCategory(String categoryName)
@@ -38,6 +44,17 @@ public class EventService {
     public Optional<Event> getEvent(long id) {
         return eventRepository.findById(id);
     }
+
+
+    public List<Object[]> getUserEvents(long idAccount)
+    {
+
+        List<Object[]> tickets = null;
+        tickets = ticketRepository.getClientTicket(idAccount);
+        return tickets;
+
+    }
+
     public void addEvent(Event event) {
         /*if(!Objects.isNull(event.getNameEvent()) &&
                 !Objects.isNull(event.getDateTimeEvent()) &&
