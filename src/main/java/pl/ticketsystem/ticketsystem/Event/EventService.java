@@ -1,15 +1,14 @@
 package pl.ticketsystem.ticketsystem.Event;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
-import pl.ticketsystem.ticketsystem.Client.ClientRepository;
-import pl.ticketsystem.ticketsystem.Ticket.TicketRepository;
 import pl.ticketsystem.ticketsystem.Type.TypeEvent;
 import pl.ticketsystem.ticketsystem.Type.TypeEventRepository;
 
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -56,6 +55,7 @@ public class EventService {
     }
 
     public void addEvent(Event event) {
+    public long addEvent(Event event) {
         /*if(!Objects.isNull(event.getNameEvent()) &&
                 !Objects.isNull(event.getDateTimeEvent()) &&
                 !Objects.isNull(event.getLocationEvent()) &&
@@ -74,10 +74,23 @@ public class EventService {
 
         eventRepository.save(event);
 
-
-
+        return eventRepository.findIdEventByNameEvent(event.getNameEvent(), event.getLocationEvent(), event.getPriceEvent());
     }
 
+    public void addEventImage(MultipartFile image) {
+        System.out.println("Nazwa pliku: " + image.getOriginalFilename());
+        if(!Objects.isNull(image)) {
+            File file = new File("src/main/resources/img/" + image.getOriginalFilename());
+
+            try (OutputStream os = new FileOutputStream(file)) {
+                os.write(image.getBytes());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void updateEvent(long id, Event event) {
         if(eventRepository.existsById(id)) {
