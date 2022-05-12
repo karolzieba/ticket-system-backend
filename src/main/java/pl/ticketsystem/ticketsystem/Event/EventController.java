@@ -1,8 +1,11 @@
 package pl.ticketsystem.ticketsystem.Event;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.ticketsystem.ticketsystem.Type.TypeEvent;
 
 import java.util.List;
@@ -36,10 +39,14 @@ public class EventController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('event_add')")
-    public void addEvent(@RequestBody Event event) {
+    public ResponseEntity<Long> addEvent(@RequestBody Event event) {
+        return new ResponseEntity<>(eventService.addEvent(event), HttpStatus.OK);
+    }
 
-        System.out.println("TESTHEHEHEHE");
-        eventService.addEvent(event);
+    @PostMapping("/image")
+    @PreAuthorize("hasAuthority('event_add')")
+    public void addEventImage(@RequestParam("image") MultipartFile image) {
+        eventService.addEventImage(image);
     }
 
     @PatchMapping(path="{eventId}")
