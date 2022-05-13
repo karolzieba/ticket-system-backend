@@ -4,12 +4,19 @@ import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
-@Controller
+
+@RestController
 @RequestMapping(path="api/payment")
 public class PayPalController {
 
@@ -22,24 +29,18 @@ public class PayPalController {
 
 
         try {
-            Payment payment = payPalService.createPayment(order.getPrice(), "PLN", "http://localhostL8080/"+CANCEL_URL,
-                    "http://localhostL8080/"+SUCCESS_URL);
-            for (Links link: payment.getLinks())
-            {
-                System.out.println("DUPA");
-                System.out.println(link.getRel());
-                if(link.getRel().equals("approval_url"))
-                {
-                    System.out.println(link.getHref());
-                    return link.getHref();
-                }
-                else
-                {
-                    System.out.println("DWUSETKI PALAM");
-                    return "#";
-                }
-            }
+            Payment payment = payPalService.createPayment(order.getPrice(), "PLN", "http://localhost:8080/api/payment/"+CANCEL_URL,
+                    "http://localhost:8080/api/payment/"+SUCCESS_URL);
 
+            System.out.println(payment.getState());
+           Links approval_url = payment
+                   .getLinks()
+                   .stream()
+                   .filter(f -> f.getRel().contains("approval_url"))
+                   .findFirst()
+                   .orElseThrow();
+            System.out.println(approval_url.getHref());
+            return approval_url.getHref();
         } catch (PayPalRESTException e) {
             e.printStackTrace();
         }
@@ -47,21 +48,23 @@ public class PayPalController {
 
 
 
-        return "#";
+    return null;
     }
 
-    @GetMapping(value = SUCCESS_URL)
-    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+    @GetMapping( SUCCESS_URL)
+    public RedirectView successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) throws URISyntaxException {
         try {
             Payment payment = payPalService.executePayment(paymentId, payerId);
             System.out.println(payment.toJSON());
             if (payment.getState().equals("approved")) {
-                return "success";
+                RedirectView redirectView = new RedirectView();
+                redirectView.setUrl("http://localhost:3000");
+                return redirectView;
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
         }
-        return "redirect";
+        return null;
     }
 
     @GetMapping(value = CANCEL_URL)
