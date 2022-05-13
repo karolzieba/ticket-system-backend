@@ -60,6 +60,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoringAntMatchers("/register/agency")
                 .ignoringAntMatchers("/register/moderator")
                 .ignoringAntMatchers("/register/client")
+                .ignoringAntMatchers("api/payment/pay")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         http
