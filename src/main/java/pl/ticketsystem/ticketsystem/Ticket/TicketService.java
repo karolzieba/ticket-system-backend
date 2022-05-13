@@ -21,6 +21,7 @@ public class TicketService {
     private final ClientRepository clientRepository;
     private final EventRepository eventRepository;
     private final PaymentRepository paymentRepository;
+
     @Autowired
     public TicketService(TicketRepository ticketRepository, ClientRepository clientRepository, EventRepository eventRepository, PaymentRepository paymentRepository) {
         this.ticketRepository = ticketRepository;
@@ -69,6 +70,7 @@ public class TicketService {
         }
     }
     public void deleteTicket(long id) {
+
         ticketRepository.deleteById(id);
     }
 

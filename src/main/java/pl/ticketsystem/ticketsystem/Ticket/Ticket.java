@@ -5,12 +5,13 @@ import pl.ticketsystem.ticketsystem.Event.Event;
 import pl.ticketsystem.ticketsystem.Payment.Payment;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name="Ticket")
-public class Ticket {
+public class Ticket implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idTicket;
@@ -24,7 +25,7 @@ public class Ticket {
     @JoinColumn(name="idEventFK", referencedColumnName = "idEvent")
     private Event event;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name="idPaymentFK", referencedColumnName = "idPayment")
     private Payment payment;
 

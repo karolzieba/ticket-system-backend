@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
 import pl.ticketsystem.ticketsystem.Client.ClientRepository;
+import pl.ticketsystem.ticketsystem.Ticket.Ticket;
 import pl.ticketsystem.ticketsystem.Ticket.TicketRepository;
 import pl.ticketsystem.ticketsystem.Type.TypeEvent;
 import pl.ticketsystem.ticketsystem.Type.TypeEventRepository;
@@ -23,6 +24,7 @@ public class EventService {
     private final AgencyRepository agencyRepository;
     private final TicketRepository ticketRepository;
     private final ClientRepository clientRepository;
+
     @Autowired
     public EventService(EventRepository eventRepository, TypeEventRepository typeEventRepository, AgencyRepository agencyRepository, TicketRepository ticketRepository, ClientRepository clientRepository) {
         this.eventRepository = eventRepository;
@@ -70,8 +72,6 @@ public class EventService {
         TypeEvent typeEvent = typeEventRepository.findBynameTypeEventIgnoreCase(event.getTypeEvent().getNameTypeEvent());
         Agency agency = agencyRepository.findById(event.getAgency().getIdAgency()).get();
 
-        System.out.println(typeEvent.toString());
-        System.out.println(agency.toString());
         event.setTypeEvent(typeEvent);
         event.setAgency(agency);
 
@@ -119,6 +119,10 @@ public class EventService {
                 updatedEvent.setCapacityEvent(event.getCapacityEvent());
             }
 
+            if(!Objects.isNull(event.isWaitingToAccept())) {
+                updatedEvent.setWaitingToAccept(event.isWaitingToAccept());
+            }
+
             if(!Objects.isNull(event.getAgency())) {
                 updatedEvent.setAgency(event.getAgency());
             }
@@ -134,6 +138,7 @@ public class EventService {
         }
     }
     public void deleteEvent(long id) {
+
         eventRepository.deleteById(id);
     }
 }

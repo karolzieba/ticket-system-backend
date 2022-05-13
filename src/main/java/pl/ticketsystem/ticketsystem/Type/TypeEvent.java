@@ -3,11 +3,12 @@ package pl.ticketsystem.ticketsystem.Type;
 import pl.ticketsystem.ticketsystem.Event.Event;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name="TypeEvent")
-public class TypeEvent {
+public class TypeEvent implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private long idTypeEvent;

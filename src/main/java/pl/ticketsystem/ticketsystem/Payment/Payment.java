@@ -4,12 +4,13 @@ import pl.ticketsystem.ticketsystem.Ticket.Ticket;
 import pl.ticketsystem.ticketsystem.Type.TypePayment;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name="Payment")
-public class Payment {
+public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idPayment;
@@ -20,8 +21,21 @@ public class Payment {
     @JoinColumn(name = "idTypeOfPaymentFK", referencedColumnName = "idTypePayment")
     private TypePayment typePayment;
 
-    @OneToMany(mappedBy = "payment")
-    private Set<Ticket> ticket;
+    @OneToOne(mappedBy = "payment")
+    private Ticket ticket;
+
+    public Payment(LocalDateTime startDatePayment, TypePayment typePayment) {
+        this.startDatePayment = startDatePayment;
+        this.typePayment = typePayment;
+    }
+
+    public Payment(LocalDateTime startDatePayment, LocalDateTime endDatePayment, TypePayment typePayment) {
+        this.startDatePayment = startDatePayment;
+        this.endDatePayment = endDatePayment;
+        this.typePayment = typePayment;
+    }
+
+    public Payment() { }
 
     public long getIdPayment() {
         return idPayment;

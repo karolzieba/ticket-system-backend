@@ -23,8 +23,7 @@ public class Event implements Serializable {
     private String locationEvent;
     private Double priceEvent;
     private Integer capacityEvent;
-
-    //private boolean waitingToAccept;
+    private boolean waitingToAccept;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "idTypeEventFK", referencedColumnName = "idTypeEvent")
@@ -34,10 +33,7 @@ public class Event implements Serializable {
     @JoinColumn(name = "idAgencyFK", referencedColumnName = "idAgency")
     private Agency agency;
 
-
-
-    @OneToMany(mappedBy = "event")
-
+    @OneToMany(mappedBy = "event", orphanRemoval = true)
     @JsonBackReference
     private Set<Ticket> ticket;
 
@@ -89,19 +85,14 @@ public class Event implements Serializable {
         this.capacityEvent = capacityEvent;
     }
 
-    @JsonIgnore
-    @JsonProperty(value = "TypeEvent")
     public TypeEvent getTypeEvent() {
         return typeEvent;
     }
-
 
     public void setTypeEvent(TypeEvent typeEvent) {
         this.typeEvent = typeEvent;
     }
 
-    @JsonIgnore
-    @JsonProperty(value = "agency")
     public Agency getAgency() {
         return agency;
     }
@@ -118,5 +109,11 @@ public class Event implements Serializable {
         this.ticket = ticket;
     }
 
+    public boolean isWaitingToAccept() {
+        return waitingToAccept;
+    }
 
+    public void setWaitingToAccept(boolean waitingToAccept) {
+        this.waitingToAccept = waitingToAccept;
+    }
 }
