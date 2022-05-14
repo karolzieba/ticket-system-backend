@@ -6,13 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
 import pl.ticketsystem.ticketsystem.Client.ClientRepository;
-import pl.ticketsystem.ticketsystem.Ticket.Ticket;
 import pl.ticketsystem.ticketsystem.Ticket.TicketRepository;
-import pl.ticketsystem.ticketsystem.Type.TypeEvent;
-import pl.ticketsystem.ticketsystem.Type.TypeEventRepository;
+import pl.ticketsystem.ticketsystem.Type.TypeEvent.TypeEvent;
+import pl.ticketsystem.ticketsystem.Type.TypeEvent.TypeEventRepository;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

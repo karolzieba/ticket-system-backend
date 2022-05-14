@@ -1,12 +1,11 @@
 package pl.ticketsystem.ticketsystem.Payment;
 
 import pl.ticketsystem.ticketsystem.Ticket.Ticket;
-import pl.ticketsystem.ticketsystem.Type.TypePayment;
+import pl.ticketsystem.ticketsystem.Type.TypePayment.TypePayment;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name="Payment")

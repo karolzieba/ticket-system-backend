@@ -36,6 +36,10 @@ public class TicketService {
     public Optional<Ticket> getTicket(long id) {
         return ticketRepository.findById(id);
     }
+    public List<Ticket> getTicketsByClientId(long id) {
+        return ticketRepository.getTicketsByClient_IdClient(id);
+    }
+
     public void addTicket(Ticket ticket) {
         if(!Objects.isNull(ticket.getDateTicketBuy()) /*&&
                 !Objects.isNull(ticket.getClient()) &&
@@ -44,13 +48,16 @@ public class TicketService {
             /*if(isAgeCorrect(ticket.getClient().getDateOfBirth(),
                     ticket.getEvent().getDateTimeEvent(),
                     ticket.getEvent().getTypeEvent().getMinAgeLimit())) {*/
-                Client client = clientRepository.getClientByAccount_IdAccount(ticket.getClient().getIdClient()).get();
+                Client client = clientRepository.getClientByIdClient(ticket.getClient().getIdClient()).get();
                 Event event = eventRepository.findById(ticket.getEvent().getIdEvent()).get();
                 Payment payment = paymentRepository.findById(ticket.getPayment().getIdPayment()).get();
                 ticket.setClient(client);
                 ticket.setEvent(event);
                 ticket.setPayment(payment);
                 ticketRepository.save(ticket);
+
+                event.setCapacityEvent(event.getCapacityEvent() - 1);
+                eventRepository.save(event);
             //}
         }
     }

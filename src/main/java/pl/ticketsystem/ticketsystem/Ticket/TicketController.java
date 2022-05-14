@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -36,6 +37,12 @@ public class TicketController {
     @PreAuthorize("hasAuthority('ticket_show')")
     public Ticket getTicket(@PathVariable long ticketId) {
         return ticketService.getTicket(ticketId).orElse(null);
+    }
+
+    @GetMapping(path="/client/{clientId}")
+    @PreAuthorize("hasAuthority('ticket_show')")
+    public List<Ticket> getTicketsByClientId(@PathVariable long clientId) {
+        return ticketService.getTicketsByClientId(clientId);
     }
 
     @PostMapping

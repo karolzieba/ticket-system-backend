@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem.Type;
+package pl.ticketsystem.ticketsystem.Type.TypeEvent;
 
 import pl.ticketsystem.ticketsystem.Event.Event;
 

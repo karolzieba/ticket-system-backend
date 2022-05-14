@@ -2,6 +2,8 @@ package pl.ticketsystem.ticketsystem.Payment;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.ticketsystem.ticketsystem.Type.TypePayment.TypePayment;
+import pl.ticketsystem.ticketsystem.Type.TypePayment.TypePaymentRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,10 +12,12 @@ import java.util.Optional;
 @Service
 public class PaymentService {
     private final PaymentRepository paymentRepository;
+    private final TypePaymentRepository typePaymentRepository;
 
     @Autowired
-    public PaymentService(PaymentRepository paymentRepository) {
+    public PaymentService(PaymentRepository paymentRepository, TypePaymentRepository typePaymentRepository) {
         this.paymentRepository = paymentRepository;
+        this.typePaymentRepository = typePaymentRepository;
     }
 
     public List<Payment> getPayments() {
@@ -22,11 +26,17 @@ public class PaymentService {
     public Optional<Payment> getPayment(long id) {
         return paymentRepository.findById(id);
     }
-    public void addPayment(Payment payment) {
+    public long addPayment(Payment payment) {
         if(!Objects.isNull(payment.getStartDatePayment()) /*&&
                 !Objects.isNull(payment.getTypePayment())*/) {
+
+            TypePayment typePayment = typePaymentRepository.getTypePaymentByIdTypePayment(payment.getTypePayment().getIdTypePayment())
+                            .orElseThrow(() -> new IllegalStateException("Type of payment with this ID does not exist!"));
+            payment.setTypePayment(typePayment);
             paymentRepository.save(payment);
         }
+
+        return paymentRepository.findIdPaymentByPaymentDateAndType(payment.getStartDatePayment(), payment.getTypePayment());
     }
 
     public void updatePayment(long id, Payment payment) {

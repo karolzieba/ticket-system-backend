@@ -1,11 +1,9 @@
 package pl.ticketsystem.ticketsystem.Event;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Ticket.Ticket;
-import pl.ticketsystem.ticketsystem.Type.TypeEvent;
+import pl.ticketsystem.ticketsystem.Type.TypeEvent.TypeEvent;
 
 import javax.persistence.*;
 import java.io.Serializable;

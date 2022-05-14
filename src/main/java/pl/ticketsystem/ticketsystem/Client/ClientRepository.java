@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface ClientRepository extends JpaRepository<Client, Long> {
     boolean existsByPhoneNumber(String phoneNumber);
     Optional<Client> getClientByAccount_IdAccount(long idAccount);
+    Optional<Client> getClientByIdClient(long idClient);
     Optional<Client> findByAccount_IdSocial(String idSocial);
 }

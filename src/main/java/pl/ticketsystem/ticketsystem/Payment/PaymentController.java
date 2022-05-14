@@ -30,8 +30,8 @@ public class PaymentController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_CLIENT_FACEBOOK')")
-    public void addPayment(@RequestBody Payment payment) {
-        paymentService.addPayment(payment);
+    public long addPayment(@RequestBody Payment payment) {
+        return paymentService.addPayment(payment);
     }
 
     @PatchMapping(path="{paymentId}")

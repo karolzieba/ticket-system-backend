@@ -1,4 +1,4 @@
-package pl.ticketsystem.ticketsystem.Type;
+package pl.ticketsystem.ticketsystem.Type.TypePayment;
 
 import pl.ticketsystem.ticketsystem.Payment.Payment;
 
