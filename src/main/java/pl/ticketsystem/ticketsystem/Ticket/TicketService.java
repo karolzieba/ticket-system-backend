@@ -97,8 +97,11 @@ public class TicketService {
     }
     public void deleteTicket(long id) {
         Ticket ticket = ticketRepository.findById(id).get();
+        Event event = eventRepository.findEventByTicket_IdTicket(id).get();
+        event.setCapacityEvent(event.getCapacityEvent() + 1);
 
-        paymentRepository.deleteById(ticket.getPayment().getIdPayment());
+        eventRepository.save(event);
         ticketRepository.deleteById(id);
+        paymentRepository.deleteById(ticket.getPayment().getIdPayment());
     }
 }

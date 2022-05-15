@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import pl.ticketsystem.ticketsystem.Type.TypeEvent.TypeEvent;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
@@ -16,4 +17,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                 @Param("price") double price);
     List<Event> findEventByTypeEvent(TypeEvent typeEvent);
     List <Event> findAllByOrderByIdEventDesc();
+    Optional<Event> findEventByTicket_IdTicket(long idTicket);
 }

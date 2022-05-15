@@ -15,7 +15,7 @@ public class Ticket implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idTicket;
-    private LocalDate dateTicketBuy;
+    private LocalDateTime dateTicketBuy;
 
     @ManyToOne
     @JoinColumn(name="idClientFK", referencedColumnName = "idClient")
@@ -37,11 +37,11 @@ public class Ticket implements Serializable {
         this.idTicket = idTicket;
     }
 
-    public LocalDate getDateTicketBuy() {
+    public LocalDateTime getDateTicketBuy() {
         return dateTicketBuy;
     }
 
-    public void setDateTicketBuy(LocalDate dateTicketBuy) {
+    public void setDateTicketBuy(LocalDateTime dateTicketBuy) {
         this.dateTicketBuy = dateTicketBuy;
     }
 
