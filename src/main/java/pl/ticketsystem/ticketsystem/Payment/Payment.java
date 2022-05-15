@@ -16,7 +16,7 @@ public class Payment implements Serializable {
     private LocalDateTime startDatePayment;
     private LocalDateTime endDatePayment;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "idTypeOfPaymentFK", referencedColumnName = "idTypePayment")
     private TypePayment typePayment;
 

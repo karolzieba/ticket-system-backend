@@ -45,6 +45,18 @@ public class TicketController {
         return ticketService.getTicketsByClientId(clientId);
     }
 
+    @GetMapping(path="/checkAge")
+    @PreAuthorize("hasAuthority('ticket_add')")
+    public boolean checkAge(@RequestParam("idclient") long idClient, @RequestParam("idevent") long idEvent) {
+        return ticketService.checkAge(idClient, idEvent);
+    }
+
+    @GetMapping(path="/checkTicketExist")
+    @PreAuthorize("hasAuthority('ticket_add')")
+    public boolean checkTicketExist(@RequestParam("idclient") long idClient, @RequestParam("idevent") long idEvent) {
+        return ticketService.checkTicketExist(idClient, idEvent);
+    }
+
     @PostMapping
     @PreAuthorize("hasAuthority('ticket_add')")
     public void addTicket(@RequestBody Ticket ticket) {

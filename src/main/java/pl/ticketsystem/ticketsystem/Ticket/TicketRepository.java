@@ -18,4 +18,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             "inner join client on ticket.id_clientfk = client.id_client inner join account on client.account_fk = account.id_account where account.id_account = ?1")
     List<Object[]> getClientTicket(Long idUser);
     List<Ticket> getTicketsByClient_IdClient(Long idClient);
+    List<Ticket> getTicketsByEvent_IdEvent(Long idEvent);
+    boolean existsByClient_IdClientAndEvent_IdEvent(Long idClient, Long idEvent);
 }

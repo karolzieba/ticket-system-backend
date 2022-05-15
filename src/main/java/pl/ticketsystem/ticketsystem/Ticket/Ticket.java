@@ -17,15 +17,15 @@ public class Ticket implements Serializable {
     private long idTicket;
     private LocalDate dateTicketBuy;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name="idClientFK", referencedColumnName = "idClient")
     private Client client;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name="idEventFK", referencedColumnName = "idEvent")
     private Event event;
 
-    @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name="idPaymentFK", referencedColumnName = "idPayment")
     private Payment payment;
 

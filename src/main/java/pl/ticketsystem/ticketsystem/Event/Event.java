@@ -23,15 +23,15 @@ public class Event implements Serializable {
     private Integer capacityEvent;
     private boolean waitingToAccept;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne
     @JoinColumn(name = "idTypeEventFK", referencedColumnName = "idTypeEvent")
     private TypeEvent typeEvent;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne
     @JoinColumn(name = "idAgencyFK", referencedColumnName = "idAgency")
     private Agency agency;
 
-    @OneToMany(mappedBy = "event", orphanRemoval = true)
+    @OneToMany(mappedBy = "event")
     @JsonBackReference
     private Set<Ticket> ticket;
 

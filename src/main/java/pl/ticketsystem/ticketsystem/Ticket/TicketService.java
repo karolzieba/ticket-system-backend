@@ -40,6 +40,25 @@ public class TicketService {
         return ticketRepository.getTicketsByClient_IdClient(id);
     }
 
+    public boolean checkAge(long idClient, long idEvent) {
+        Client client = clientRepository.findById(idClient).get();
+        Event event = eventRepository.findById(idEvent).get();
+
+        LocalDate dateOfBirth = client.getDateOfBirth();
+        LocalDateTime dateEvent = event.getDateTimeEvent();
+        int age = event.getTypeEvent().getMinAgeLimit();
+
+        LocalDate eventDate = LocalDate.of(dateEvent.getYear(), dateEvent.getMonth(), dateEvent.getDayOfMonth());
+
+        dateOfBirth = LocalDate.of(dateOfBirth.getYear() + age, dateOfBirth.getMonth(), dateOfBirth.getDayOfMonth());
+
+        return dateOfBirth.isBefore(eventDate) || dateOfBirth.isEqual(eventDate);
+    }
+
+    public boolean checkTicketExist(long idClient, long idEvent) {
+        return ticketRepository.existsByClient_IdClientAndEvent_IdEvent(idClient, idEvent);
+    }
+
     public void addTicket(Ticket ticket) {
         if(!Objects.isNull(ticket.getDateTicketBuy()) /*&&
                 !Objects.isNull(ticket.getClient()) &&
@@ -77,15 +96,9 @@ public class TicketService {
         }
     }
     public void deleteTicket(long id) {
+        Ticket ticket = ticketRepository.findById(id).get();
 
+        paymentRepository.deleteById(ticket.getPayment().getIdPayment());
         ticketRepository.deleteById(id);
-    }
-
-    public boolean isAgeCorrect(LocalDate dateOfBirth, LocalDateTime dateEvent, int age) {
-        LocalDate event = LocalDate.of(dateEvent.getYear(), dateEvent.getMonth(), dateEvent.getDayOfMonth());
-
-        dateOfBirth = LocalDate.of(dateOfBirth.getYear() + age, dateOfBirth.getMonth(), dateOfBirth.getDayOfMonth());
-
-        return dateOfBirth.isBefore(event) || dateOfBirth.isEqual(event);
     }
 }

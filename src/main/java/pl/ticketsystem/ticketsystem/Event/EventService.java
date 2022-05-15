@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.ticketsystem.ticketsystem.Agency.Agency;
 import pl.ticketsystem.ticketsystem.Agency.AgencyRepository;
 import pl.ticketsystem.ticketsystem.Client.ClientRepository;
+import pl.ticketsystem.ticketsystem.Payment.PaymentRepository;
+import pl.ticketsystem.ticketsystem.Ticket.Ticket;
 import pl.ticketsystem.ticketsystem.Ticket.TicketRepository;
 import pl.ticketsystem.ticketsystem.Type.TypeEvent.TypeEvent;
 import pl.ticketsystem.ticketsystem.Type.TypeEvent.TypeEventRepository;
@@ -22,14 +24,16 @@ public class EventService {
     private final AgencyRepository agencyRepository;
     private final TicketRepository ticketRepository;
     private final ClientRepository clientRepository;
+    private final PaymentRepository paymentRepository;
 
     @Autowired
-    public EventService(EventRepository eventRepository, TypeEventRepository typeEventRepository, AgencyRepository agencyRepository, TicketRepository ticketRepository, ClientRepository clientRepository) {
+    public EventService(EventRepository eventRepository, TypeEventRepository typeEventRepository, AgencyRepository agencyRepository, TicketRepository ticketRepository, ClientRepository clientRepository, PaymentRepository paymentRepository) {
         this.eventRepository = eventRepository;
         this.typeEventRepository = typeEventRepository;
         this.agencyRepository = agencyRepository;
         this.ticketRepository = ticketRepository;
         this.clientRepository = clientRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     public List<Event> getEvents() {
@@ -136,6 +140,13 @@ public class EventService {
         }
     }
     public void deleteEvent(long id) {
+        List<Ticket> tickets = ticketRepository.getTicketsByEvent_IdEvent(id);
+
+        ticketRepository.deleteAll(tickets);
+
+        for(Ticket ticket : tickets) {
+            paymentRepository.deleteById(ticket.getPayment().getIdPayment());
+        }
 
         eventRepository.deleteById(id);
     }
