@@ -29,6 +29,16 @@ public class Ticket implements Serializable {
     @JoinColumn(name="idPaymentFK", referencedColumnName = "idPayment")
     private Payment payment;
 
+    public Ticket(LocalDateTime dateTicketBuy, Client client, Event event, Payment payment) {
+        this.dateTicketBuy = dateTicketBuy;
+        this.client = client;
+        this.event = event;
+        this.payment = payment;
+    }
+
+    public Ticket() {
+    }
+
     public long getIdTicket() {
         return idTicket;
     }

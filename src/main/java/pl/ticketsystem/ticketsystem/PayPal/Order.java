@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +15,7 @@ import lombok.ToString;
 public class Order {
 
     private double price;
-
-
+    private String description;
+    private LocalDateTime localDateTime;
 
 }

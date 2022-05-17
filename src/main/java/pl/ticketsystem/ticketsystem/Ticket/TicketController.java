@@ -3,6 +3,7 @@ package pl.ticketsystem.ticketsystem.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.ticketsystem.ticketsystem.PayPal.Order;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -59,7 +60,7 @@ public class TicketController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ticket_add')")
-    public void addTicket(@RequestBody Ticket ticket) {
+    public void addTicket(@RequestBody Ticket ticket, @RequestBody Order order) {
         ticketService.addTicket(ticket);
     }
 

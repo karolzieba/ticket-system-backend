@@ -19,6 +19,7 @@ public class PayPalService {
     public Payment createPayment(
             Double total,
             String currency,
+            String description,
             String cancelUrl,
             String successUrl
             ) throws PayPalRESTException {
@@ -28,7 +29,7 @@ public class PayPalService {
         amount.setTotal(String.format("%.2f", total).replace(",", "."));
 
         Transaction transaction = new Transaction();
-        transaction.setDescription("description");
+        transaction.setDescription(description);
         transaction.setAmount(amount);
 
         List<Transaction> transactions = new ArrayList<>();
