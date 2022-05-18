@@ -18,6 +18,7 @@ import pl.ticketsystem.ticketsystem.Moderator.ModeratorRepository;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class AuthUtilService {
@@ -50,9 +51,16 @@ public class AuthUtilService {
         }
 
         String userName = "";
+        boolean hasSetBirthday = false;
         if(role.equals("ROLE_CLIENT_FACEBOOK")) {
             OAuthAccountDetails accountDetails = (OAuthAccountDetails) authentication.getPrincipal();
             userName = accountDetails.getUsername();
+
+            Client client = clientRepository.findByAccount_IdSocial(accountDetails.getIdSocial()).orElseThrow(() -> new IllegalStateException("Account with this Social ID does not exist!"));
+
+            if(!Objects.isNull(client.getDateOfBirth())) {
+                hasSetBirthday = true;
+            }
         }
         else {
             AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
@@ -66,6 +74,10 @@ public class AuthUtilService {
         if(role.startsWith("ROLE_CLIENT")) {
             Client client = clientRepository.getClientByAccount_IdAccount(id).orElseThrow(() -> new IllegalStateException("Client with this ID does not exist!"));
             idRole = client.getIdClient();
+
+            if(!Objects.isNull(client.getDateOfBirth())) {
+                hasSetBirthday = true;
+            }
         }
         else if(role.startsWith("ROLE_AGENCY")) {
             Agency agency = agencyRepository.getAgencyByAccount_IdAccount(id).orElseThrow(() -> new IllegalStateException("Agency with this ID does not exist!"));
@@ -79,6 +91,7 @@ public class AuthUtilService {
         return Map.of("id", String.valueOf(id),
                 "username", userName,
                 "role", role,
-                "idRole", String.valueOf(idRole));
+                "idRole", String.valueOf(idRole),
+                "hasSetBirthday", String.valueOf(hasSetBirthday));
     }
 }
