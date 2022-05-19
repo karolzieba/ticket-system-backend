@@ -3,18 +3,40 @@ package pl.ticketsystem.ticketsystem.Agency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.ticketsystem.ticketsystem.Event.Event;
+import pl.ticketsystem.ticketsystem.Event.EventRepository;
+import pl.ticketsystem.ticketsystem.Payment.PaymentRepository;
+import pl.ticketsystem.ticketsystem.Ticket.Ticket;
+import pl.ticketsystem.ticketsystem.Ticket.TicketRepository;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
 public class AgencyService {
     private final AgencyRepository agencyRepository;
+    private final EventRepository eventRepository;
+    private final TicketRepository ticketRepository;
+    private final PaymentRepository paymentRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AgencyService(AgencyRepository agencyRepository, PasswordEncoder passwordEncoder) {
+    public AgencyService(AgencyRepository agencyRepository, EventRepository eventRepository,
+                         TicketRepository ticketRepository, PaymentRepository paymentRepository,
+                         PasswordEncoder passwordEncoder) {
         this.agencyRepository = agencyRepository;
+        this.eventRepository = eventRepository;
+        this.ticketRepository = ticketRepository;
+        this.paymentRepository = paymentRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public List<Agency> getAgencies() {
+        return agencyRepository.findAll();
+    }
+
+    public Agency getAgency(long agencyId) {
+        return agencyRepository.findById(agencyId).get();
     }
 
     public void updateAgency(long idAgency, Agency agency) {
@@ -50,5 +72,24 @@ public class AgencyService {
         else {
             throw new IllegalStateException("Agency with this ID does not exist!");
         }
+    }
+
+    public void deleteAgency(long idAgency) {
+        Agency agency = agencyRepository.findById(idAgency).get();
+
+        List<Event> events = eventRepository.findEventsByAgency_IdAgency(idAgency);
+
+        for(Event event : events) {
+            List<Ticket> tickets = ticketRepository.getTicketsByEvent_IdEvent(event.getIdEvent());
+
+            ticketRepository.deleteAll(tickets);
+
+            for(Ticket ticket : tickets) {
+                paymentRepository.deleteById(ticket.getPayment().getIdPayment());
+            }
+        }
+
+        eventRepository.deleteAll(events);
+        agencyRepository.delete(agency);
     }
 }

@@ -16,6 +16,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     long findIdEventByNameEvent(@Param("name") String nameEvent, @Param("location") String location,
                                 @Param("price") double price);
     List<Event> findEventByTypeEvent(TypeEvent typeEvent);
+    List<Event> findEventsByAgency_IdAgency(long idAgency);
     List <Event> findAllByOrderByIdEventDesc();
     Optional<Event> findEventByTicket_IdTicket(long idTicket);
 }

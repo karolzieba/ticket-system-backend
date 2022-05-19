@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -15,6 +16,14 @@ public class ModeratorService {
     public ModeratorService(ModeratorRepository moderatorRepository, PasswordEncoder passwordEncoder) {
         this.moderatorRepository = moderatorRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public List<Moderator> getModerators() {
+        return moderatorRepository.findAll();
+    }
+
+    public Moderator getModerator(long moderatorId) {
+        return moderatorRepository.findById(moderatorId).get();
     }
 
     public void updateModerator(long idModerator, Moderator moderator) {
@@ -42,5 +51,11 @@ public class ModeratorService {
         else {
             throw new IllegalStateException("Moderator with this ID does not exist!");
         }
+    }
+
+    public void deleteModerator(long moderatorId) {
+        Moderator moderator = moderatorRepository.findById(moderatorId).get();
+
+        moderatorRepository.delete(moderator);
     }
 }
