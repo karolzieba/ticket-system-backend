@@ -79,7 +79,7 @@ public class PayPalController {
     public RedirectView successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) throws URISyntaxException {
         try {
             Payment payment = payPalService.executePayment(paymentId, payerId);
-            TypePayment typePayment = typePaymentRepository.getTypePaymentByIdTypePayment(2).get();
+            TypePayment typePayment = typePaymentRepository.getTypePaymentByIdTypePayment(1).get();
 
             if (payment.getState().equals("approved")) {
                 String dateFormat = payment.getCreateTime().substring(0,16 );
@@ -94,6 +94,10 @@ public class PayPalController {
 
                 Ticket ticket = new Ticket(aLDT, client, event, payment1);
                 ticketRepository.save(ticket);
+
+                event.setCapacityEvent(event.getCapacityEvent() - 1);
+                eventRepository.save(event);
+
                 RedirectView redirectView = new RedirectView();
                 redirectView.setUrl("http://localhost:3000");
                 return redirectView;

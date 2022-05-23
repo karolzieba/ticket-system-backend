@@ -60,24 +60,20 @@ public class TicketService {
     }
 
     public void addTicket(Ticket ticket) {
-        if(!Objects.isNull(ticket.getDateTicketBuy()) /*&&
+        if(!Objects.isNull(ticket.getDateTicketBuy()) &&
                 !Objects.isNull(ticket.getClient()) &&
                 !Objects.isNull(ticket.getEvent()) &&
-                !Objects.isNull(ticket.getPayment())*/) {
-            /*if(isAgeCorrect(ticket.getClient().getDateOfBirth(),
-                    ticket.getEvent().getDateTimeEvent(),
-                    ticket.getEvent().getTypeEvent().getMinAgeLimit())) {*/
-                Client client = clientRepository.getClientByIdClient(ticket.getClient().getIdClient()).get();
-                Event event = eventRepository.findById(ticket.getEvent().getIdEvent()).get();
-                Payment payment = paymentRepository.findById(ticket.getPayment().getIdPayment()).get();
-                ticket.setClient(client);
-                ticket.setEvent(event);
-                ticket.setPayment(payment);
-                ticketRepository.save(ticket);
+                !Objects.isNull(ticket.getPayment())) {
+                    Client client = clientRepository.getClientByIdClient(ticket.getClient().getIdClient()).get();
+                    Event event = eventRepository.findById(ticket.getEvent().getIdEvent()).get();
+                    Payment payment = paymentRepository.findById(ticket.getPayment().getIdPayment()).get();
+                    ticket.setClient(client);
+                    ticket.setEvent(event);
+                    ticket.setPayment(payment);
+                    ticketRepository.save(ticket);
 
-                event.setCapacityEvent(event.getCapacityEvent() - 1);
-                eventRepository.save(event);
-            //}
+                    event.setCapacityEvent(event.getCapacityEvent() - 1);
+                    eventRepository.save(event);
         }
     }
 

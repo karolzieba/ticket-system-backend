@@ -35,10 +35,6 @@ public class AuthUtilService {
         this.moderatorRepository = moderatorRepository;
     }
 
-    public void socialDeauthorize() {
-
-    }
-
     public Map<String, String> getInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
